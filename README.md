@@ -6,11 +6,42 @@
 
 ## Table of contents
 
-[Technologies](##Technologies)
+* [Technologies](#Technologies)
+* [Dependencies](#Dependencies)
+* [Screenshots:](#Screenshots)
+  * [Web](#Web)
+  * [Mobile](#Mobile)
+* [Getting started](#GettingStarted)
+* [License](#Licence)
+
+<a name="Screenshots" />
+
+## Screenshots 
+
+<a name="Web" />
+
+#### Web screenshots
+
+<a name="Mobile" />
+
+#### Mobile screenshots
+
+
+<a name="Technologies" />
+
+## :computer: Technologies :computer:
+This application was made using the follow technologies:
+
+* [Typescript](https://www.typescriptlang.org/)
+* [Node.js](https://nodejs.org/en/)
+* [React](https://reactjs.org/)
+* [React Native](https://reactnative.dev/)
+* [Expo](https://expo.io/learn)
 
 
 
+## Getting started
 
+## License
 
-## Technologies
-
+[MIT license](https://github.com/IgorSAssis/Proffy/blob/master/LICENSE)
