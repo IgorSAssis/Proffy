@@ -28,7 +28,7 @@
 
 <a name="Web" />
 
-#### :computer: &nbsp; Web screenshots
+### :computer: &nbsp; Web screenshots
 
 <p align="center">
   <img src="https://github.com/IgorSAssis/Proffy/blob/master/.github/Proffy-landingPage.png" width="400" /> 
@@ -37,7 +37,7 @@
 
 <a name="Mobile" />
 
-#### :iphone: &nbsp; Mobile screenshots
+### :iphone: &nbsp; Mobile screenshots
 
 
 <a name="Technologies" />
