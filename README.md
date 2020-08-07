@@ -4,7 +4,7 @@
 
 > :rocket: Project made to connect teachers to students, made in Next Level Week #2 #NLW @Rocketseat&nbsp; :rocket:
 
-## Table of contents
+## :pushpin: &nbsp; Table of contents
 
 * [Technologies](#Technologies)
 * [Dependencies](#Dependencies)
@@ -16,15 +16,15 @@
 
 <a name="Screenshots" />
 
-## Screenshots 
+## :camera: &nbsp; Screenshots 
 
 <a name="Web" />
 
-#### Web screenshots
+#### :computer: &nbsp; Web screenshots
 
 <a name="Mobile" />
 
-#### Mobile screenshots
+#### :iphone: &nbsp; Mobile screenshots
 
 
 <a name="Technologies" />
