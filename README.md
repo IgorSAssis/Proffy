@@ -31,8 +31,8 @@
 #### :computer: &nbsp; Web screenshots
 
 <p align="center">
-  <img src="https://github.com/IgorSAssis/Proffy/blob/master/.github/Proffy-landingPage.png" width="450" /> 
-  <img src="https://github.com/IgorSAssis/Proffy/blob/master/.github/Proffy-list.png" width="450" /> 
+  <img src="https://github.com/IgorSAssis/Proffy/blob/master/.github/Proffy-landingPage.png" width="400" /> 
+  <img src="https://github.com/IgorSAssis/Proffy/blob/master/.github/Proffy-list.png" width="400" /> 
 </p>
 
 <a name="Mobile" />
