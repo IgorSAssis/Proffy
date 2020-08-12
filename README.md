@@ -19,7 +19,7 @@
   * [Web](#Web)
   * [Mobile](#Mobile)
 * [Technologies](#Technologies)
-* [Installation](#Installation)
+* [How to run](#HowToRun)
 * [License](#Licence)
 
 <a name="Screenshots" />
@@ -51,9 +51,9 @@ This application was made using the follow technologies:
 * [React Native](https://reactnative.dev/)
 * [Expo](https://expo.io/learn)
 
-<a name="Installation" />
+<a name="HowToRun" />
 
-## :clipboard: &nbsp; Installation
+## :clipboard: &nbsp; How to run
 
 ```shell
   # Clone repository
@@ -87,6 +87,25 @@ Access API at http://localhost:3333/.
 ```
 
 Go to http://localhost:3000/ to see the application.
+
+### :iphone: &nbsp; Mobile
+
+```shell
+  # Go to server folder
+  $ cd Proffy/mobile
+  
+  # Install dependencies
+  $ yarn install
+```
+Download the expo on your mobile, connect your phone to the computer with a USB cable and run the following command:
+
+```shell
+  # Run application
+  $ yarn start
+```
+
+Scan the QR code that will appear on the screen with the expo and wait a few minutes until the packaging process is complete.
+<br/>***Make sure your server is running.***
 
 <a name="Licence" />
 
