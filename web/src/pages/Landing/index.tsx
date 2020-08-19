@@ -14,46 +14,54 @@ import purpleHeartIcon from "../../assets/images/icons/purple-heart.svg";
 
 function Landing() {
 
-    const [ totalConnections, setTotalConnections ] = useState(0);
+    const [totalConnections, setTotalConnections] = useState(0);
 
-    useEffect( () => {
+    useEffect(() => {
         api.get("connections").then(response => {
             const { total } = response.data;
             setTotalConnections(total);
         })
-    }, [] );
+    }, []);
 
     return (
 
-        <div id="page-landing">
-            <div id="page-landing-content" className="container">
-                <div className="logo-container">
-                    <img alt="Proffy logo" src={ logoImg } />
+        <div id="page-container">
+            <div className="logo-container">
+                <div className="logo-content">
+                    <img alt="Proffy logo" src={logoImg} />
                     <h2>Sua plataforma de estudos online.</h2>
                 </div>
-                <img 
-                    alt="" 
-                    src={ landingImg } 
-                    className="hero-image" 
-                    />
-
-                <div className="buttons-container">
-                    <Link to="/study" className="study">
-                        <img alt="Study icon" src={ studyIcon } />
-                        Estudar
-                    </Link>
-                    <Link to="/give-classes" className="give-classes" >
-                        <img alt="Give class icon" src={ giveClassesIcon } />
-                        Dar aula
-                    </Link>
-                </div>
-                <span className="total-connections" >
-                    Total de { totalConnections } conexões já realizadas.
-                    <img alt="Purple heart icon" src={ purpleHeartIcon } ></img>
-                </span>
-
             </div>
-        </div>
+            <div className="form-container">
+                <form>
+                    <fieldset>
+                        <legend>Faça o login</legend>
+                        <div className="input-group">
+                            <input placeholder="E-mail"></input>
+                            <input placeholder="Senha"></input>
+                        </div>
+                    </fieldset>
+                    <div className="passwords-options-container">
+                        <div className="checkbox-container">
+                            <input type="checkbox" id="rememberMe" />
+                            <label htmlFor="rememberMe">Lembrar-me</label>
+                        </div>
+                        <a href="#">Esqueci minha senha</a>
+                    </div>
+                    <button>Entrar</button>
+                    <div className="register">
+                        <span>Não tem conta? <br/>
+                            <a href="#">Cadastre-se</a>
+                        </span>
+                        <span>
+                            É de graça
+                            <img alt="Heart" src={purpleHeartIcon} />
+                        </span>
+
+                    </div>
+                </form>
+            </div>
+        </div >
 
     );
 }
