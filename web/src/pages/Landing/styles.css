@@ -127,3 +127,18 @@ span {
     line-height: 36px;
     margin-bottom: 3.5rem;
 }
+
+@media screen and (max-width: 900px) {
+ 
+    #page-container {
+        display: block;
+    }
+
+    .form-container {
+        padding-top: 6rem;
+    }
+
+    .form-container div.register{
+        padding-bottom: 5rem;
+    }
+}
