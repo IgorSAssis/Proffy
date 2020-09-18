@@ -75,6 +75,10 @@ span {
     color: #9C98A6;
 }
 
+.form-container form .passwords-options-container a:hover {
+    text-decoration: underline;
+}
+
 .form-container form .passwords-options-container div.checkbox-container {
     display: flex;
     gap: 1.6rem;

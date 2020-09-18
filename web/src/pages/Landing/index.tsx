@@ -46,7 +46,7 @@ function Landing() {
                                 <input type="checkbox" id="rememberMe" />
                                 <label htmlFor="rememberMe">Lembrar-me</label>
                             </div>
-                            <a href="#">Esqueci minha senha</a>
+                            <Link to="/reset-password">Esqueci minha senha</Link>
                         </div>
                         <button>Entrar</button>
                         <div className="register">
