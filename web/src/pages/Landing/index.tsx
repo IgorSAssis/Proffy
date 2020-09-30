@@ -6,8 +6,6 @@ import api from "../../services/api";
 
 import "./styles.css";
 
-import logoImg from "../../assets/images/logo.svg";
-
 import purpleHeartIcon from "../../assets/images/icons/purple-heart.svg";
 import Logo from "../../components/Logo";
 
@@ -15,8 +13,15 @@ function Landing() {
 
     const [totalConnections, setTotalConnections] = useState(0);
 
+    const [ password, setPassword ] = useState("");
+    const [ passwordShown, setPasswordShown ] = useState(false);
+
     function toggleShowPassword(event: MouseEvent) {
         console.log(event)
+    }
+
+    function togglePasswordVisible() {
+        setPasswordShown(!passwordShown);
     }
 
     useEffect(() => {
@@ -37,8 +42,15 @@ function Landing() {
                         <div className="input-group">
                             <input placeholder="E-mail" />
                             <div className="password-input-content">
-                                <input placeholder="Senha" />
-                                <image onClick={toggleShowPassword}><FiEye /></image>
+                                <input
+                                    type={passwordShown ? "text" : "password"}
+                                    placeholder="Senha"
+                                    value={password}
+                                    onChange={event => setPassword(event.target.value)}
+                                />
+                                <image type="button" onClick={togglePasswordVisible}>
+                                    {passwordShown ? <FiEyeOff /> : <FiEye />}
+                                </image>
                             </div>
                         </div>
                         <div className="passwords-options-container">
