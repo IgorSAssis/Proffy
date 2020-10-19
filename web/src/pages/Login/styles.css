@@ -1,0 +1,155 @@
+h2,
+legend,
+input,
+label, 
+a,
+span {
+    font-family: Poppins;
+    color: #9C98A6;
+}
+
+#page-container {
+    width: 100vw;
+    height: 100vh;
+    color: var(--color-text-in-primary);
+    background-color: var(--color-background);
+    display: flex;
+    align-items: center;
+}
+
+.form-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.form-container form button {
+    display: block;
+    width: 352px;
+    height: 56px;
+    color: #9C98A6;
+    font-family: Archivo;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 26px;
+    text-align: center;
+    margin-top: 3.6rem;
+    background: #DCDCE6;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+}
+
+.form-container form button:hover {
+    background-color: var(--color-secundary-dark);
+    color: #FFFFFF;
+}
+
+.form-container form .register{
+    display: flex;
+    justify-content: space-between;
+    margin: 100px 0 -100px 0;
+}
+
+.form-container form .register span > img{
+    padding-left: 1rem;
+    opacity: 0.8;
+    font-size: 12px;
+}
+
+.form-container form .register span > a{
+    color: var(--color-primary);
+}
+
+.form-container form .passwords-options-container {
+    display: flex;
+    padding-top: 2rem;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.form-container form .passwords-options-container a {
+    text-decoration-line: none;
+    color: #9C98A6;
+}
+
+.form-container form .passwords-options-container a:hover {
+    text-decoration: underline;
+}
+
+.form-container form .passwords-options-container div.checkbox-container {
+    display: flex;
+    gap: 1.6rem;
+}
+
+.form-container form .passwords-options-container div.checkbox-container input {
+    width: 20px;
+    height: 20px;
+    background: var(--color-box-footer);
+    border: 1px solid var(--color-line-in-white);
+    box-sizing: border-box;
+    border-radius: 10px;
+    outline: none;
+}
+
+.form-container form fieldset input {
+    display: block;
+    width: 352px;
+    height: 72px;
+    border: 1px solid var(--color-line-in-white);
+    padding-left: 2rem;
+}
+
+.form-container form fieldset .input-group .password-input-content {
+    display: flex;
+}
+
+.form-container form fieldset .input-group .password-input-content image {
+    position: relative;
+    right: 50px;
+    top: 20px;
+    font-size: 24px;
+    cursor: pointer;
+    color: var(--color-primary);
+}
+
+.form-container form fieldset .input-group input{
+    outline: none;
+}
+
+.form-container form fieldset .input-group input[placeholder="Senha"] {
+    border-radius: 0px 0px 8px 8px;
+}
+
+.form-container form fieldset .input-group input[placeholder="E-mail"] {
+    border-radius: 8px 8px 0px 0px;
+}
+
+.form-container form fieldset {
+    border: 0;
+}
+
+.form-container form fieldset legend {
+    color: var(--color-text-title);
+    font-weight: 600;
+    font-size: 36px;
+    line-height: 36px;
+    margin-bottom: 3.5rem;
+}
+
+@media screen and (max-width: 900px) {
+ 
+    #page-container {
+        display: block;
+    }
+
+    .form-container {
+        padding-top: 6rem;
+    }
+
+    .form-container div.register{
+        padding-bottom: 5rem;
+    }
+}

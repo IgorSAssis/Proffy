@@ -48,8 +48,11 @@ export default class {
 
         const {
             name,
+            surname,
             avatar,
             whatsapp,
+            email,
+            password,
             bio,
             subject,
             cost,
@@ -61,9 +64,12 @@ export default class {
         try {
             const insertedUsersIds = await transaction("users").insert({
                 name,
+                surname,
                 avatar,
                 whatsapp,
-                bio
+                bio,
+                email,
+                password
             });
             const user_id = insertedUsersIds[0];
 

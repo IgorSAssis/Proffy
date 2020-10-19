@@ -52,16 +52,6 @@ function TeacherForm() {
         .catch(() => {
             alert("Erro no cadastro.")
         })
-
-        console.log({
-            name,
-            avatar,
-            whatsapp,
-            bio,
-            subject,
-            cost,
-            scheduleItems
-        })
     }
 
     function setScheduleItemValue(position: number, fieldName: string, value: string) {

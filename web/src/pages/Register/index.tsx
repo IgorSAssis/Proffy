@@ -6,20 +6,41 @@ import "./styles.css";
 
 import Logo from "../../components/Logo";
 
+import api from "../../services/api";
+
 function Register() {
 
+    const [ name, setName ] = useState("")
+    const [ surname, setSurname ] = useState("")
+    const [ email, setEmail ] = useState("")
     const [ password, setPassword ] = useState("");
+
     const [ passwordShown, setPasswordShown ] = useState(false);
 
 
     let history = useHistory();
 
     function handleFinishRegister() {
-        history.push("/register-conclusion")
     }
 
     function togglePasswordVisible() {
         setPasswordShown(!passwordShown);
+    }
+
+    function handleRegisterUser() {
+
+        api.post("register", {
+            name,
+            surname,
+            email,
+            password
+        }).then(resolve => {
+            localStorage.setItem("token", resolve.data.token)
+            history.push("/");
+        }).catch(reject => {
+            console.log(reject)
+            alert("Erro ao efetuar o cadastro!")
+        })
     }
 
 
@@ -30,14 +51,29 @@ function Register() {
                     <Link to="/" className="arrowLeft">
                         <FiArrowLeft />
                     </Link>
-                    <form onSubmit={handleFinishRegister}>
+                    <form onSubmit={handleRegisterUser}>
                         <fieldset>
                             <legend>Cadastro</legend>
                             <h4>Preencha os dados abaixo<br />para começar</h4>
                             <div className="inputs">
-                                <input placeholder="Nome" type="text" required/>
-                                <input placeholder="Sobrenome" type="text" required />
-                                <input placeholder="E-mail" type="email" required />
+                                <input placeholder="Nome"
+                                       type="text" 
+                                       value={name} 
+                                       onChange={event => setName(event.target.value)} 
+                                       required
+                                       />
+                                <input placeholder="Sobrenome" 
+                                       type="text" 
+                                       value={surname}
+                                       onChange={event => setSurname(event.target.value)}
+                                       required 
+                                       />
+                                <input  placeholder="E-mail"
+                                        type="email" 
+                                        value={email}
+                                        onChange={event => setEmail(event.target.value)}
+                                        required 
+                                        />
                                 <div className="password-input-content">
                                     <input 
                                         type={passwordShown ? "text" : "password"}

@@ -1,6 +1,7 @@
 import React from "react";
 import { BrowserRouter, Route } from "react-router-dom";
 
+import Login from "./pages/Login/index";
 import Landing from "./pages/Landing/index";
 import Register from "./pages/Register/index";
 import TeacherForm from "./pages/TeacherForm/index";
@@ -12,7 +13,8 @@ import ForgotPasswordConclusion from "./pages/ForgotPasswordConclusion";
 function Routes() {
     return (
         <BrowserRouter>
-            <Route path="/" exact component={ Landing }/>
+            <Route path="/" exact component={ Login }/>
+            <Route path="/home" component={ Landing }/>
             <Route path="/study" component={ TeacherList }/>
             <Route path="/register" component={ Register }/>
             <Route path="/register-conclusion" component={ RegisterConclusion }></Route>
