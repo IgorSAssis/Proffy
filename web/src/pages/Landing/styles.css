@@ -149,7 +149,7 @@
 }
 
 #home-page-container .home-page-lesser-content .lesser-container .button-group-container a:last-child:hover {
-    background-color: #24EF7F;
+    background-color: var(--color-secundary-light);
 }
 
 @media screen and (max-width: 1250px) {

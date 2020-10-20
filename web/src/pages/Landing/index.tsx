@@ -19,7 +19,7 @@ function Landing() {
                 <div className="upper-container">
                     <div className="user-container">
                         <div className="user-content">
-                            <Link className="user-icon" to="/profile"></Link>
+                            <Link className="user-icon" to="/teacher-profile"></Link>
                             <h4>Nome do usuário</h4>
                         </div>
                         <div className="logoff-container">
