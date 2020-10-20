@@ -27,9 +27,25 @@
 #home-page-container .home-page-upper-content .upper-container .user-container .user-content .user-icon {
     width: 50px;
     height: 50px;
-    border: 1px solid black;
+    border: 0 solid transparent;
     border-radius: 50px;
     cursor: pointer;
+    overflow: hidden;
+}
+
+#home-page-container .home-page-upper-content .upper-container .user-container .user-content .user-icon + a {
+    color: #FFF;
+    text-decoration-line: none;
+    margin-left: 13px;
+}
+
+#home-page-container .home-page-upper-content .upper-container .user-container .user-content .user-icon + a:hover {
+    text-decoration-line: underline;
+}
+
+#home-page-container .home-page-upper-content .upper-container .user-container .user-content .user-icon img {
+    width: 50px;
+    height: 50px;
 }
 
 #home-page-container .home-page-upper-content .upper-container .user-container .user-content h4 {
