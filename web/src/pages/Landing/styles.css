@@ -1,155 +1,179 @@
-h2,
-legend,
-input,
-label, 
-a,
-span {
-    font-family: Poppins;
-    color: #9C98A6;
-}
-
-#page-container {
+#home-page-container {
     width: 100vw;
     height: 100vh;
-    color: var(--color-text-in-primary);
-    background-color: var(--color-background);
+
+    display: flex;
+    flex-direction: column;
+}
+
+#home-page-container .home-page-upper-content {
+    width: 100%;
+    height: 75%;
+    display: flex;
+    justify-content: center;
+    background-color: var(--color-primary);
+}
+
+#home-page-container .home-page-upper-content .upper-container,
+#home-page-container .home-page-lesser-content .lesser-container {
+    width: 80%;
+}
+
+#home-page-container .home-page-upper-content .upper-container .user-container .user-content {
     display: flex;
     align-items: center;
 }
 
-.form-container {
-    flex: 1;
+#home-page-container .home-page-upper-content .upper-container .user-container .user-content .user-icon {
+    width: 50px;
+    height: 50px;
+    border: 1px solid black;
+    border-radius: 50px;
+    cursor: pointer;
+}
+
+#home-page-container .home-page-upper-content .upper-container .user-container .user-content h4 {
+    margin-left: 14px;
+}
+
+#home-page-container .home-page-upper-content .upper-container .user-container .logoff-container button {
+    width: 50px;
+    height: 50px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 22px;
+    text-align: center;
+    background-color: var(--color-primary-dark);
+    color: #fff;
+    border: none;
+    outline: none;
+}
+
+#home-page-container .home-page-upper-content .upper-container .user-container .logoff-container button:hover {
+    background-color: var(--color-primary-light);
+}
+
+#home-page-container .home-page-upper-content .upper-container .user-container {
+    margin-top: 40px;
     display: flex;
-    flex-direction: column;
+    justify-content: space-between;
+}
+
+#home-page-container .home-page-upper-content .upper-container .logo-proffy-container {
+    display: flex;
+    justify-content: space-between;
+}
+
+#home-page-container .home-page-upper-content .upper-container .logo-proffy-container .logo-proffy-content {
+    margin-top: 12rem;
+}
+
+#home-page-container .home-page-upper-content .upper-container .logo-proffy-container .logo-proffy-content h2 {
+    font-weight: normal;
+    font-size: 30px;
+    color: var(--color-text-in-primary);
+}
+
+#home-page-container .home-page-lesser-content {
+    width: 100%;
+    height: 25%;
+    display: flex;
+    justify-content: center;
+}
+
+#home-page-container .home-page-lesser-content .lesser-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+#home-page-container .home-page-lesser-content .lesser-container h4 {
+    font-weight: normal;
+    line-height: 20px;
+    font-size: 17px;
+    color: var(--color-text-base);
+}
+
+#home-page-container .home-page-lesser-content .lesser-container .total-connections-container p {
+    text-align: right;
+    color: var(--color-text-complement);
+
+    position: relative;
+    left: 70px;
+}
+
+#home-page-container .home-page-lesser-content .lesser-container .total-connections-container p>img {
+    opacity: 0.7;
+}
+
+#home-page-container .home-page-lesser-content .lesser-container .button-group-container {
+    display: flex;
+}
+
+#home-page-container .home-page-lesser-content .lesser-container .button-group-container a {
+    width: 250px;
+    height: 80px;
+    border: thin solid transparent;
+    border-radius: 10px;
+    color: white;
+
+    text-decoration-line: none;
+
+    font-weight: 700;
+    font-size: 17px;
+
+    cursor: pointer;
+
+    display: flex;
     align-items: center;
     justify-content: center;
 }
 
-.form-container form button {
-    display: block;
-    width: 352px;
-    height: 56px;
-    color: #9C98A6;
-    font-family: Archivo;
-    font-weight: 600;
-    font-size: 16px;
-    line-height: 26px;
-    text-align: center;
-    margin-top: 3.6rem;
-    background: #DCDCE6;
-    border-radius: 8px;
-    border: none;
-    cursor: pointer;
+#home-page-container .home-page-lesser-content .lesser-container .button-group-container a img {
+    width: 30px;
+    margin-right: 13px;
 }
 
-.form-container form button:hover {
-    background-color: var(--color-secundary-dark);
-    color: #FFFFFF;
+#home-page-container .home-page-lesser-content .lesser-container .button-group-container a:first-child {
+    background-color: var(--color-primary);
+    margin-right: 15px;
+
 }
 
-.form-container form .register{
-    display: flex;
-    justify-content: space-between;
-    margin: 100px 0 -100px 0;
+#home-page-container .home-page-lesser-content .lesser-container .button-group-container a:first-child:hover {
+    background-color: var(--color-primary-light);
 }
 
-.form-container form .register span > img{
-    padding-left: 1rem;
-    opacity: 0.8;
-    font-size: 12px;
+#home-page-container .home-page-lesser-content .lesser-container .button-group-container a:last-child {
+    background-color: var(--color-secundary);
 }
 
-.form-container form .register span > a{
-    color: var(--color-primary);
+#home-page-container .home-page-lesser-content .lesser-container .button-group-container a:last-child:hover {
+    background-color: var(--color-secundary-light);
 }
 
-.form-container form .passwords-options-container {
-    display: flex;
-    padding-top: 2rem;
-    justify-content: space-between;
-    align-items: center;
-}
+@media screen and (max-width: 1250px) {
 
-.form-container form .passwords-options-container a {
-    text-decoration-line: none;
-    color: #9C98A6;
-}
-
-.form-container form .passwords-options-container a:hover {
-    text-decoration: underline;
-}
-
-.form-container form .passwords-options-container div.checkbox-container {
-    display: flex;
-    gap: 1.6rem;
-}
-
-.form-container form .passwords-options-container div.checkbox-container input {
-    width: 20px;
-    height: 20px;
-    background: var(--color-box-footer);
-    border: 1px solid var(--color-line-in-white);
-    box-sizing: border-box;
-    border-radius: 10px;
-    outline: none;
-}
-
-.form-container form fieldset input {
-    display: block;
-    width: 352px;
-    height: 72px;
-    border: 1px solid var(--color-line-in-white);
-    padding-left: 2rem;
-}
-
-.form-container form fieldset .input-group .password-input-content {
-    display: flex;
-}
-
-.form-container form fieldset .input-group .password-input-content image {
-    position: relative;
-    right: 50px;
-    top: 20px;
-    font-size: 24px;
-    cursor: pointer;
-    color: var(--color-primary);
-}
-
-.form-container form fieldset .input-group input{
-    outline: none;
-}
-
-.form-container form fieldset .input-group input[placeholder="Senha"] {
-    border-radius: 0px 0px 8px 8px;
-}
-
-.form-container form fieldset .input-group input[placeholder="E-mail"] {
-    border-radius: 8px 8px 0px 0px;
-}
-
-.form-container form fieldset {
-    border: 0;
-}
-
-.form-container form fieldset legend {
-    color: var(--color-text-title);
-    font-weight: 600;
-    font-size: 36px;
-    line-height: 36px;
-    margin-bottom: 3.5rem;
+    #home-page-container .home-page-lesser-content .lesser-container .total-connections-container p {
+        position: unset;
+    }
 }
 
 @media screen and (max-width: 900px) {
- 
-    #page-container {
+
+    #home-page-container .home-page-lesser-content .lesser-container {
         display: block;
+        position: relative;
     }
 
-    .form-container {
-        padding-top: 6rem;
+    #home-page-container .home-page-lesser-content .lesser-container h4 {
+        margin: 30px 0;
     }
 
-    .form-container div.register{
-        padding-bottom: 5rem;
+    #home-page-container .home-page-lesser-content .lesser-container .total-connections-container p {
+        position: absolute;        
+        left: 360px;
+        top: 30px;
     }
+
 }

@@ -1,5 +1,5 @@
 import React from "react";
-import { Link, Redirect } from "react-router-dom"
+import { Link, useHistory } from "react-router-dom"
 
 import "./styles.css"
 import { FiArrowLeft } from "react-icons/fi"
@@ -7,6 +7,13 @@ import { FiArrowLeft } from "react-icons/fi"
 import Logo from "../../components/Logo/index";
 
 function ForgotPassword() {
+
+    let history = useHistory();
+
+    function openForgotPasswordConclusion() {
+        history.push("/reset-password-conclusion");
+    }
+
     return (
         <div id="forgot-password-page" className="page-container">
 
@@ -20,9 +27,9 @@ function ForgotPassword() {
                         <h1>Eita, esqueceu <br />sua senha?</h1>
                         <h4>Não esquenta, vamos dar um jeito nisso.</h4>
                     </hgroup>
-                    <form>
+                    <form onSubmit={openForgotPasswordConclusion}>
                         <input type="email" placeholder="E-mail" required></input>
-                        <button>Enviar</button>
+                        <button type="submit">Enviar</button>
                     </form>
                 </div>
             </div>
