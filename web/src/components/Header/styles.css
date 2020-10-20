@@ -1,0 +1,16 @@
+header {
+    padding: 10px 170px 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    background-color: var(--color-primary-dark);
+}
+
+header span {
+    color: #FFF;
+}
+
+header img {
+    width: 50px;
+}
