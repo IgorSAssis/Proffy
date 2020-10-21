@@ -2,9 +2,10 @@ import React, { useState, FormEvent } from "react";
 import { useHistory } from "react-router-dom";
 
 import PageHeader from "../../components/PageHeader/index";
-import Input from "../../components/Input";
-import Textarea from "../../components/Textarea";
-import Select from "../../components/Select";
+import Input from "../../components/Input/index";
+import Textarea from "../../components/Textarea/index";
+import Select from "../../components/Select/index";
+import HeaderBar from "../../components/HeaderBar/index"
 
 import "./styles.css";
 import warnIcon from "../../assets/images/icons/warning.svg";
@@ -45,13 +46,13 @@ function TeacherForm() {
             cost: Number(cost),
             schedule: scheduleItems
         })
-        .then(() => {
-            alert("Cadastro realizado com sucesso!");
-            history.push("/");
-        })
-        .catch(() => {
-            alert("Erro no cadastro.")
-        })
+            .then(() => {
+                alert("Cadastro realizado com sucesso!");
+                history.push("/");
+            })
+            .catch(() => {
+                alert("Erro no cadastro.")
+            })
     }
 
     function setScheduleItemValue(position: number, fieldName: string, value: string) {
@@ -68,43 +69,51 @@ function TeacherForm() {
     return (
 
         <div id="page-teacher-form" className="container">
+
+            <HeaderBar currentPage="Dar aulas" />
             <PageHeader
                 title="Que incrível que você quer dar aulas."
                 description="O primeiro passo é preencher esse formulário de inscrição"
+                icon="rocket"
             />
+
             <main>
                 <form onSubmit={handleCreateClass}>
                     <fieldset>
                         <legend>Seus Dados</legend>
-                        <Input name="name" label="Nome completo" value={name} onChange={(event) => { setName(event.target.value) }} />
-                        <Input name="avatar" label="Avatar" value={avatar} onChange={(event) => { setAvatar(event.target.value) }} />
-                        <Input name="whatsapp" label="WhatsApp" value={whatsapp} onChange={(event) => { setWhatsapp(event.target.value) }} />
+                        <div className="teacher-form-data-wrapper">
+                            <div className="teacher-data-wrapper">
+                                <img src="https://avatars3.githubusercontent.com/u/53535028?s=460&u=5c8d9211e92350617aa6604ac57445a7dffdfa8b&v=4" alt="" />
+                                <strong>Igor Semphoski de Assis</strong>
+                            </div>
+                            <Input name="whatsapp" label="WhatsApp" value={whatsapp} onChange={(event) => { setWhatsapp(event.target.value) }} />
+                        </div>
                         <Textarea name="bio" label="Biografia" value={bio} onChange={(event) => { setBio(event.target.value) }} />
 
                     </fieldset>
 
                     <fieldset>
                         <legend>Sobre a aula</legend>
-
-                        <Select
-                            name="subject"
-                            label="Matéria"
-                            defaultOption="Selecione uma matéria"
-                            value={subject}
-                            onChange={(event) => { setSubject(event.target.value) }}
-                            options={[
-                                { value: "Artes", label: "Artes" },
-                                { value: "Biologia", label: "Biologia" },
-                                { value: "Química", label: "Química" },
-                                { value: "Educação física", label: "Educação física" },
-                                { value: "Matemática", label: "Matemática" },
-                                { value: "Português", label: "Português" },
-                                { value: "História", label: "História" },
-                                { value: "Geografia", label: "Geografia" }
-                            ]}
-                        />
-                        <Input name="cost" label="Custo da sua hora por aula" value={cost} onChange={(event) => { setCost(event.target.value) }} />
-
+                        <div className="teacher-form-about-class-wrapper">
+                            <Select
+                                name="subject"
+                                label="Matéria"
+                                defaultOption="Selecione uma matéria"
+                                value={subject}
+                                onChange={(event) => { setSubject(event.target.value) }}
+                                options={[
+                                    { value: "Artes", label: "Artes" },
+                                    { value: "Biologia", label: "Biologia" },
+                                    { value: "Química", label: "Química" },
+                                    { value: "Educação física", label: "Educação física" },
+                                    { value: "Matemática", label: "Matemática" },
+                                    { value: "Português", label: "Português" },
+                                    { value: "História", label: "História" },
+                                    { value: "Geografia", label: "Geografia" }
+                                ]}
+                            />
+                            <Input name="cost" label="Custo da sua hora por aula" value={cost} onChange={(event) => { setCost(event.target.value) }} />
+                        </div>
                     </fieldset>
 
                     <fieldset>
@@ -122,7 +131,7 @@ function TeacherForm() {
                                         name="day-of-week"
                                         label="Dia da semana"
                                         defaultOption="Selecione um dia"
-                                        value={ scheduleItem.week_day }
+                                        value={scheduleItem.week_day}
                                         onChange={event => setScheduleItemValue(index, "week_day", event.target.value)}
                                         options={[
                                             { value: "0", label: "Domingo" },
@@ -138,14 +147,14 @@ function TeacherForm() {
                                         name="from"
                                         label="Das"
                                         type="time"
-                                        value={ scheduleItem.from }
+                                        value={scheduleItem.from}
                                         onChange={event => setScheduleItemValue(index, "from", event.target.value)}
                                     />
                                     <Input
                                         name="to"
                                         label="Até"
                                         type="time"
-                                        value={ scheduleItem.to }
+                                        value={scheduleItem.to}
                                         onChange={event => setScheduleItemValue(index, "to", event.target.value)}
                                     />
                                 </div>

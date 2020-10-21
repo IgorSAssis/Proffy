@@ -4,10 +4,10 @@ import { FiCamera } from "react-icons/fi";
 import "./styles.css";
 import warning from "../../assets/images/icons/warning.svg";
 
-import Input from "../../components/Input";
-import TextArea from "../../components/Textarea";
-import Select from "../../components/Select";
-import Header from "../../components/Header";
+import Input from "../../components/Input/index";
+import TextArea from "../../components/Textarea/index";
+import Select from "../../components/Select/index";
+import HeaderBar from "../../components/HeaderBar/index";
 
 function TeacherProfile() {
 
@@ -31,7 +31,7 @@ function TeacherProfile() {
 
             <div className="teacher-profile-upper-container">
 
-                <Header />
+                <HeaderBar currentPage="Meu perfil"/>
 
                 <div className="teacher-image-container">
                     <div className="teacher-photo-wrapper">

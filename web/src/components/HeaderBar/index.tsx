@@ -5,20 +5,21 @@ import logo from "../../assets/images/logo.svg";
 
 import "./styles.css";
 
-interface HeaderProps {
+interface HeaderBarProps {
+    currentPage: string;
     pageToComeBack?: string;
 }
 
-const Header: React.FC<HeaderProps> = ({ pageToComeBack = "/home" }) => {
+const HeaderBar: React.FC<HeaderBarProps> = ({ currentPage, pageToComeBack = "/home" }) => {
     return (
         <header>
             <Link to={pageToComeBack}>
                 <img src={arrowBack} alt="Arrow back" />
             </Link>
-            <span>Meu perfil</span>
+            <span>{currentPage}</span>
             <img src={logo} alt="Logo" />
         </header>
     )
 }
 
-export default Header;
+export default HeaderBar;

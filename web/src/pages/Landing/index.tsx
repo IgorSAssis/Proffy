@@ -51,12 +51,12 @@ function Landing() {
                     </div>
 
                     <div className="button-group-container">
-                        <Link to="">
+                        <Link to="/study">
                             <img src={study} alt="Study" />
                             Estudar
                         </Link>
 
-                        <Link to="">
+                        <Link to="/give-classes">
                             <img src={giveClasses} alt="Give classes" />
                             Dar aulas
                         </Link>
