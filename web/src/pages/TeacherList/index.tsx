@@ -4,6 +4,7 @@ import api from "../../services/api";
 import "./styles.css";
 
 import PageHeader from "../../components/PageHeader/index";
+import HeaderBar from "../../components/HeaderBar/index"
 import TeacherItem, { Teacher } from "../../components/TeacherItem/index"
 import Input from "../../components/Input";
 import Select from "../../components/Select";
@@ -32,6 +33,7 @@ function TeacherList() {
     return (
 
         <div id="page-teacher-list" className="container">
+            <HeaderBar currentPage="Estudar" />
             <PageHeader title="Estes são os proffys disponíveis.">
                 <form id="search-teachers" onSubmit={searchTeachers}>
                     <Select
@@ -81,9 +83,13 @@ function TeacherList() {
             </PageHeader>
 
             <main>
-                {teachers.map((teacher: Teacher) => {
-                    return <TeacherItem key={teacher.id} teacher={teacher} />
-                })}
+                {teachers.length > 0
+                    ? teachers.map((teacher: Teacher) => {
+                        return <TeacherItem key={teacher.id} teacher={teacher} />
+                    }) :
+                    (
+                        <p>Nenhum professor encontrado com a sua pesquisa.</p>
+                    ) }
 
             </main>
         </div>

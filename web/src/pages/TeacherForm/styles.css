@@ -1,6 +1,7 @@
 #page-teacher-form {
     width: 100vw;
     height: 100vh;
+
 }
 
 #page-teacher-form .page-header .header-content {
@@ -20,6 +21,38 @@
 #page-teacher-form main fieldset {
     border: 0;
     padding: 0 2.4rem;
+}
+
+#page-teacher-form main fieldset:first-child .teacher-form-data-wrapper .teacher-data-wrapper {
+    display: flex;
+    align-items: center;
+}
+
+#page-teacher-form main fieldset:first-child .teacher-form-data-wrapper .teacher-data-wrapper img {
+    width: 75px;
+    height: 75px;
+    border-radius: 50px;
+    margin-right: 20px;
+}
+
+#page-teacher-form main fieldset:first-child .teacher-form-data-wrapper .teacher-data-wrapper strong {
+    font-size: 18px;
+}
+
+#page-teacher-form main fieldset:first-child .teacher-form-data-wrapper {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr;
+    margin-bottom: 1rem;
+}
+
+#page-teacher-form main fieldset:nth-child(2) .teacher-form-about-class-wrapper {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    column-gap: 1.6rem;
+}
+
+#page-teacher-form main fieldset:nth-child(2) .teacher-form-about-class-wrapper .input-block {
+    margin-top: 0 !important;
 }
 
 #page-teacher-form main label {

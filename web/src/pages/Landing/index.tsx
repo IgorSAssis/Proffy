@@ -1,5 +1,5 @@
 import React from "react"
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { FiPower } from "react-icons/fi"
 
 import "./styles.css"
@@ -11,6 +11,13 @@ import study from "../../assets/images/icons/study.svg";
 
 
 function Landing() {
+
+    const history = useHistory();
+
+    function handleLogoff() {
+        history.push("/")
+    }
+
     return (
         <div id="home-page-container">
 
@@ -19,11 +26,13 @@ function Landing() {
                 <div className="upper-container">
                     <div className="user-container">
                         <div className="user-content">
-                            <Link className="user-icon" to="/teacher-profile"></Link>
-                            <h4>Nome do usuário</h4>
+                            <Link className="user-icon" to="/teacher/profile">
+                                <img src="https://avatars3.githubusercontent.com/u/53535028?s=460&u=5c8d9211e92350617aa6604ac57445a7dffdfa8b&v=4" alt="User" />
+                            </Link>
+                            <Link to="/teacher/profile">Nome do usuário</Link>
                         </div>
                         <div className="logoff-container">
-                            <button>
+                            <button onClick={handleLogoff}>
                                 <FiPower />
                             </button>
                         </div>
@@ -49,12 +58,12 @@ function Landing() {
                     </div>
 
                     <div className="button-group-container">
-                        <Link to="">
+                        <Link to="/study">
                             <img src={study} alt="Study" />
                             Estudar
                         </Link>
 
-                        <Link to="">
+                        <Link to="/classes/give">
                             <img src={giveClasses} alt="Give classes" />
                             Dar aulas
                         </Link>

@@ -11,7 +11,7 @@ function ForgotPassword() {
     let history = useHistory();
 
     function openForgotPasswordConclusion() {
-        history.push("/reset-password-conclusion");
+        history.push("/password/reset/conclusion");
     }
 
     return (
@@ -19,7 +19,7 @@ function ForgotPassword() {
 
             <div className="page-content">
                 <div className="forgot-password-content">
-                    <Link to="/" className="arrowLeft">
+                    <Link to="/login" className="arrowLeft">
                         <FiArrowLeft />
                     </Link>
 

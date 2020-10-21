@@ -1,15 +1,13 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom"
 import { FiCamera } from "react-icons/fi";
 
 import "./styles.css";
-import arrowBack from "../../assets/images/icons/back.svg";
-import logo from "../../assets/images/logo.svg";
 import warning from "../../assets/images/icons/warning.svg";
 
-import Input from "../../components/Input";
-import TextArea from "../../components/Textarea";
-import Select from "../../components/Select";
+import Input from "../../components/Input/index";
+import TextArea from "../../components/Textarea/index";
+import Select from "../../components/Select/index";
+import HeaderBar from "../../components/HeaderBar/index";
 
 function TeacherProfile() {
 
@@ -33,14 +31,7 @@ function TeacherProfile() {
 
             <div className="teacher-profile-upper-container">
 
-                <header>
-                    <Link to="/home">
-                        <img src={arrowBack} alt="Arrow back" />
-                    </Link>
-                    <span>Meu perfil</span>
-                    <img src={logo} alt="Logo" />
-                </header>
-
+                <HeaderBar currentPage="Meu perfil"/>
                 <div className="teacher-image-container">
                     <div className="teacher-photo-wrapper">
                         <img src="https://avatars3.githubusercontent.com/u/53535028?s=460&u=5c8d9211e92350617aa6604ac57445a7dffdfa8b&v=4" alt="Teacher" />
@@ -51,10 +42,6 @@ function TeacherProfile() {
                     <h1>Igor Semphoski de Assis</h1>
                     <h4>Geografia</h4>
                 </div>
-
-                <div className="teacher-data-container">
-                </div>
-
             </div>
 
             <main>
