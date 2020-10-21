@@ -26,10 +26,10 @@ function Landing() {
                 <div className="upper-container">
                     <div className="user-container">
                         <div className="user-content">
-                            <Link className="user-icon" to="/teacher-profile">
+                            <Link className="user-icon" to="/teacher/profile">
                                 <img src="https://avatars3.githubusercontent.com/u/53535028?s=460&u=5c8d9211e92350617aa6604ac57445a7dffdfa8b&v=4" alt="User" />
                             </Link>
-                            <Link to="/teacher-profile">Nome do usuário</Link>
+                            <Link to="/teacher/profile">Nome do usuário</Link>
                         </div>
                         <div className="logoff-container">
                             <button onClick={handleLogoff}>
@@ -63,7 +63,7 @@ function Landing() {
                             Estudar
                         </Link>
 
-                        <Link to="/give-classes">
+                        <Link to="/classes/give">
                             <img src={giveClasses} alt="Give classes" />
                             Dar aulas
                         </Link>

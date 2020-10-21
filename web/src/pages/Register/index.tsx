@@ -48,7 +48,7 @@ function Register() {
         <div id="page-container">
             <div className="register-container">
                 <div className="register-content">
-                    <Link to="/" className="arrowLeft">
+                    <Link to="/login" className="arrowLeft">
                         <FiArrowLeft />
                     </Link>
                     <form onSubmit={handleRegisterUser}>
