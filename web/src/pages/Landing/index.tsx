@@ -1,5 +1,5 @@
 import React from "react"
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { FiPower } from "react-icons/fi"
 
 import "./styles.css"
@@ -11,6 +11,13 @@ import study from "../../assets/images/icons/study.svg";
 
 
 function Landing() {
+
+    const history = useHistory();
+
+    function handleLogoff() {
+        history.push("/")
+    }
+
     return (
         <div id="home-page-container">
 
@@ -25,7 +32,7 @@ function Landing() {
                             <Link to="/teacher-profile">Nome do usuário</Link>
                         </div>
                         <div className="logoff-container">
-                            <button>
+                            <button onClick={handleLogoff}>
                                 <FiPower />
                             </button>
                         </div>

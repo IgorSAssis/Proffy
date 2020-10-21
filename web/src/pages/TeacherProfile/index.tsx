@@ -32,7 +32,6 @@ function TeacherProfile() {
             <div className="teacher-profile-upper-container">
 
                 <HeaderBar currentPage="Meu perfil"/>
-
                 <div className="teacher-image-container">
                     <div className="teacher-photo-wrapper">
                         <img src="https://avatars3.githubusercontent.com/u/53535028?s=460&u=5c8d9211e92350617aa6604ac57445a7dffdfa8b&v=4" alt="Teacher" />

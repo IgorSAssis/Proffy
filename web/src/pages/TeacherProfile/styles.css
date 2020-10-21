@@ -8,6 +8,9 @@
 
 #page-teacher-profile .teacher-profile-upper-container {
     background-color: var(--color-primary);
+    background-image: url("../../assets/images/success-background.svg");
+    background-repeat: no-repeat;
+    background-size: 100% 90%;
     z-index: 1;
 }
 
