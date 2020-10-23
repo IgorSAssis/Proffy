@@ -35,6 +35,20 @@
     margin-right: 20px;
 }
 
+#page-teacher-form main fieldset:first-child .teacher-form-data-wrapper .teacher-data-wrapper div.no-avatar{
+    width: 75px;
+    height: 75px;
+    border-radius: 50px;
+    margin-right: 20px;
+
+    background-color: #ccc;
+    border: 2px solid #aaa;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 #page-teacher-form main fieldset:first-child .teacher-form-data-wrapper .teacher-data-wrapper strong {
     font-size: 18px;
 }

@@ -1,7 +1,5 @@
 import bcrypt from "bcrypt";
-
 import { Request, Response } from "express";
-import { sign } from "../jwt";
 
 import database from "../database/connection";
 
@@ -9,39 +7,17 @@ export default class {
 
     async index(request: Request, response: Response) {
 
-        const [hashType, hash] = request.headers.authorization?.split(" ");
-        const [email, pass] = Buffer.from(hash, "base64").toString().split(':')
+        const users = await database("users").select("id", "name" ,"surname", "avatar", "bio", "whatsapp", "email");
+        return response.status(200).json(users);
 
-        const [ userProfile ] = await database("users").where("email", "=", email);
+    }
 
-        if (userProfile === undefined) {
-            return response.status(404).send()
-        }
+    async show(request: Request, response: Response) {
 
-        const {
-            id,
-            name,
-            surname,
-            avatar,
-            bio,
-            password,
-            whatsapp } = userProfile
+        const { id } = request.params;
+        const [ userData ] = await database("users").select("name", "surname", "email", "bio", "whatsapp", "avatar").where("id", "=", id);
+        return response.status(200).json(userData);
 
-        await bcrypt.compare(pass, password, async function (err, result) {
-            if (err) {
-
-                throw err;
-            } else {
-
-                if (result) {
-                    const token = sign({ user: id })
-                    return response.status(200).send({ profile: { name, surname, avatar, whatsapp, bio, email }, token })
-
-                } else {
-                    return response.status(400).send()
-                }
-            }
-        })
     }
 
     async create(request: Request, response: Response) {
@@ -68,9 +44,9 @@ export default class {
                         return response.status(405).send();
                     } else {
                         const userId = await database("users").insert({ name, surname, email, password: hash });
-                        const token = sign({ user: userId })
-                        console.log(token);
-                        return response.status(201).send({ token });
+                        // const token = sign({ user: userId })
+                        // console.log(token);
+                        return response.status(201).send();
                     }
                 })
             }

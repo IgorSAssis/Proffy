@@ -1,5 +1,6 @@
-import React, { useState, FormEvent } from "react";
-import { useHistory } from "react-router-dom";
+import React, { useState, FormEvent, useEffect } from "react";
+import { useHistory, useParams } from "react-router-dom";
+import { FiUser } from "react-icons/fi"
 
 import PageHeader from "../../components/PageHeader/index";
 import Input from "../../components/Input/index";
@@ -11,21 +12,48 @@ import "./styles.css";
 import warnIcon from "../../assets/images/icons/warning.svg";
 import api from "../../services/api";
 
+interface UserId {
+    id: string;
+}
+
 function TeacherForm() {
 
     const history = useHistory();
+    const params = useParams<UserId>();
 
     const [scheduleItems, setScheduleItem] = useState([
         { week_day: 0, from: "", to: "" }
     ]);
 
     const [name, setName] = useState("");
+    const [surname, setSurname] = useState("");
     const [avatar, setAvatar] = useState("");
     const [whatsapp, setWhatsapp] = useState("");
     const [bio, setBio] = useState("");
 
     const [subject, setSubject] = useState("");
     const [cost, setCost] = useState("");
+
+    useEffect(() => {
+        api.get(`users/${params.id}`)
+            .then(response => {
+                const { name,
+                    surname,
+                    whatsapp,
+                    bio,
+                    avatar } = response.data;
+
+                setName(name);
+                setSurname(surname);
+                setAvatar(avatar);
+                setWhatsapp(whatsapp);
+                setBio(bio)
+            })
+            .catch(reject => {
+                console.warn(reject)
+                alert("Houve algum erro inesperado.")
+            })
+    }, [params.id])
 
     function addNewScheduleItem() {
         setScheduleItem([
@@ -83,8 +111,15 @@ function TeacherForm() {
                         <legend>Seus Dados</legend>
                         <div className="teacher-form-data-wrapper">
                             <div className="teacher-data-wrapper">
-                                <img src="https://avatars3.githubusercontent.com/u/53535028?s=460&u=5c8d9211e92350617aa6604ac57445a7dffdfa8b&v=4" alt="" />
-                                <strong>Igor Semphoski de Assis</strong>
+                                {avatar
+                                    ? (
+                                        <img src={avatar} alt="Teacher avatar" />
+                                    ) : (
+                                        <div className="no-avatar">
+                                            <FiUser color="#FFF" size={35} />
+                                        </div>
+                                    )}
+                                <strong>{`${name} ${surname}`}</strong>
                             </div>
                             <Input name="whatsapp" label="WhatsApp" value={whatsapp} onChange={(event) => { setWhatsapp(event.target.value) }} />
                         </div>
@@ -112,7 +147,13 @@ function TeacherForm() {
                                     { value: "Geografia", label: "Geografia" }
                                 ]}
                             />
-                            <Input name="cost" label="Custo da sua hora por aula" value={cost} onChange={(event) => { setCost(event.target.value) }} />
+                            <Input
+                                name="cost"
+                                label="Custo da sua hora por aula"
+                                value={cost}
+                                onChange={(event) => { setCost(event.target.value) }}
+                                placeholder="R$ "
+                            />
                         </div>
                     </fieldset>
 

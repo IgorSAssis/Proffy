@@ -43,9 +43,18 @@
     text-decoration-line: underline;
 }
 
-#home-page-container .home-page-upper-content .upper-container .user-container .user-content .user-icon img {
+#home-page-container .home-page-upper-content .upper-container .user-container .user-content .user-icon {
     width: 50px;
     height: 50px;
+
+    background-color: var(--color-primary-dark);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#home-page-container .home-page-upper-content .upper-container .user-container .user-content .user-icon:hover {
+    background-color: var(--color-primary-light);
 }
 
 #home-page-container .home-page-upper-content .upper-container .user-container .user-content h4 {

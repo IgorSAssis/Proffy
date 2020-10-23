@@ -1,5 +1,6 @@
-import React, { useState } from "react";
-import { FiCamera } from "react-icons/fi";
+import React, { useState, useEffect } from "react";
+import { useParams } from "react-router-dom"
+import { FiCamera, FiUser } from "react-icons/fi";
 
 import "./styles.css";
 import warning from "../../assets/images/icons/warning.svg";
@@ -9,11 +10,44 @@ import TextArea from "../../components/Textarea/index";
 import Select from "../../components/Select/index";
 import HeaderBar from "../../components/HeaderBar/index";
 
+import api from "../../services/api"
+
+interface UserId {
+    id: string;
+}
+
+interface UserProfile {
+    name: string;
+    surname: string;
+    whatsapp: string;
+    bio: string;
+    avatar: string;
+    email: string;
+}
+
 function TeacherProfile() {
 
     const [scheduleItems, setScheduleItem] = useState([
         { week_day: 0, from: "", to: "" }
     ]);
+
+    const params = useParams<UserId>();
+    const [teacherProfile, setTeacherProfile] = useState<UserProfile>()
+
+    useEffect(() => {
+        api.get(`users/${params.id}`)
+            .then(response => {
+                setTeacherProfile(response.data);
+            })
+            .catch(reject => {
+                console.warn(reject)
+                alert("Houve algum erro inesperado.")
+            })
+    }, [])
+
+    if (!teacherProfile) {
+        return <p>Loading.....</p>
+    }
 
     function setScheduleItemValue(position: number, fieldName: string, value: string) {
         const updatedScheduleItem = scheduleItems.map((scheduleItem, index) => {
@@ -31,15 +65,22 @@ function TeacherProfile() {
 
             <div className="teacher-profile-upper-container">
 
-                <HeaderBar currentPage="Meu perfil"/>
+                <HeaderBar currentPage="Meu perfil" />
                 <div className="teacher-image-container">
                     <div className="teacher-photo-wrapper">
-                        <img src="https://avatars3.githubusercontent.com/u/53535028?s=460&u=5c8d9211e92350617aa6604ac57445a7dffdfa8b&v=4" alt="Teacher" />
+                        {teacherProfile.avatar
+                            ? (
+                                <img src={teacherProfile.avatar} alt="Teacher avatar" />
+                            ) : (
+                                <div className="no-avatar">
+                                    <FiUser color="#FFF" size={100} />
+                                </div>
+                        )}
                         <button type="button">
                             <FiCamera color="#FFF" size={24} />
                         </button>
                     </div>
-                    <h1>Igor Semphoski de Assis</h1>
+                    <h1>{`${teacherProfile.name} ${teacherProfile.surname}`}</h1>
                     <h4>Geografia</h4>
                 </div>
             </div>
@@ -50,16 +91,16 @@ function TeacherProfile() {
                         <legend>Seus dados</legend>
 
                         <div className="name-surname-wrapper">
-                            <Input name="name" label="Nome" />
-                            <Input name="surname" label="Sobrenome" />
+                            <Input name="name" label="Nome" value={teacherProfile.name} />
+                            <Input name="surname" label="Sobrenome" value={teacherProfile.surname} />
                         </div>
 
                         <div className="email-whatsapp-wrapper">
-                            <Input name="email" label="E-mail" type="email" />
-                            <Input name="whatsapp" label="Whatsapp" />
+                            <Input name="email" label="E-mail" type="email" value={teacherProfile.email} />
+                            <Input name="whatsapp" label="Whatsapp" placeholder="(DDD) xxxxx - xxxx" value={teacherProfile.whatsapp} />
                         </div>
 
-                        <TextArea name="bio" label="Biografia" />
+                        <TextArea name="bio" label="Biografia" value={teacherProfile.bio} />
                     </fieldset>
 
                     <fieldset>
@@ -67,7 +108,7 @@ function TeacherProfile() {
 
                         <div className="about-class-wrapper">
                             <Input name="subject" label="Matéria" />
-                            <Input name="costPerHour" label="Custo da sua hora por aula" />
+                            <Input name="costPerHour" label="Custo da sua hora por aula" defaultValue="R$ "  />
                         </div>
 
                     </fieldset>

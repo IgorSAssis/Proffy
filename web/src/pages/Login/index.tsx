@@ -18,10 +18,6 @@ function Landing() {
 
     let history = useHistory();
 
-    function toggleShowPassword(event: MouseEvent) {
-        console.log(event)
-    }
-
     function togglePasswordVisible() {
         setPasswordShown(!passwordShown);
     }
@@ -36,12 +32,19 @@ function Landing() {
     function handleLogin(event: FormEvent) {
         event.preventDefault()
 
-        api.post("login", {
-            email,
-            password
-        }).then((resolve) => {
-            history.push("/lading")
+        const credentials = Buffer.from(`${email}:${password}`, "utf-8").toString("base64");
+
+        api.get("login", { headers: {
+            "Authorization": `Basic ${credentials}`
+        }})
+        .then((response) => {
+
+            const { userId, token } = response.data;
+
+            localStorage.setItem("token", token);
+            history.push(`/home/${userId}`)
         }).catch((reject) => {
+            console.log(reject)
             alert("Falha ao efetuar o login!")
         })
     }
@@ -51,7 +54,7 @@ function Landing() {
         <div id="page-container">
             <Logo />
             <div className="form-container">
-                <form>
+                <form onSubmit={handleLogin}>
                     <fieldset>
                         <legend>Faça o login</legend>
                         <div className="input-group">

@@ -1,18 +1,19 @@
-import express from "express";
+import express, { Request, Response, NextFunction }from "express";
 
 import ClassesController from "./controllers/ClassesController";
 import ConnectionController from "./controllers/ConnectionsController";
-import SignupController from "./controllers/SignupController";
 import UsersController from "./controllers/UsersController";
+import SignupController from "./controllers/SignupController"
 
 const classesController = new ClassesController();
 const connectionsController = new ConnectionController();
 const usersController = new UsersController()
-const signUpController = new SignupController()
-
-import { isAuthenticated } from "./service/auth"
+const signupController = new SignupController();
 
 const routes = express.Router();
+
+// const authMiddleware = (request: Request, response: Response, next: NextFunction ) {
+// }
 
 routes.get("/classes", classesController.index);
 routes.post("/classes", classesController.create);
@@ -20,8 +21,12 @@ routes.post("/classes", classesController.create);
 routes.get("/connections", connectionsController.index);
 routes.post("/connections", connectionsController.create);
 
-routes.get("/login", usersController.index);
-routes.post("/register", usersController.create);
+routes.get("/users", usersController.index);
+routes.get("/users/:id", usersController.show)
+routes.post("/signUp", usersController.create);
+
+routes.get("/login", signupController.index);
+
 
 export default routes;
 

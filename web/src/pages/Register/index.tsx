@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { FormEvent, useState } from "react";
 import { Link, useHistory } from "react-router-dom";
 import { FiArrowLeft, FiEye, FiEyeOff } from "react-icons/fi";
 
@@ -17,26 +17,23 @@ function Register() {
 
     const [ passwordShown, setPasswordShown ] = useState(false);
 
-
     let history = useHistory();
-
-    function handleFinishRegister() {
-    }
 
     function togglePasswordVisible() {
         setPasswordShown(!passwordShown);
     }
 
-    function handleRegisterUser() {
+    function handleRegisterUser(event: FormEvent) {
 
-        api.post("register", {
+        event.preventDefault();
+
+        api.post("signUp", {
             name,
             surname,
             email,
             password
         }).then(resolve => {
-            localStorage.setItem("token", resolve.data.token)
-            history.push("/");
+            history.push("/login");
         }).catch(reject => {
             console.log(reject)
             alert("Erro ao efetuar o cadastro!")
