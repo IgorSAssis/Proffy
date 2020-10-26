@@ -1,6 +1,7 @@
-import React, { useState, useEffect, MouseEvent, FormEvent } from "react";
+import React, { useState } from "react";
 import { Link, useHistory } from "react-router-dom";
-import { FiEye, FiEyeOff } from "react-icons/fi"
+import { FiEye, FiEyeOff, FiAlertOctagon } from "react-icons/fi"
+import { useForm } from "react-hook-form";
 
 import api from "../../services/api";
 
@@ -9,44 +10,38 @@ import "./styles.css";
 import purpleHeartIcon from "../../assets/images/icons/purple-heart.svg";
 import Logo from "../../components/Logo";
 
+type LoginValues = {
+    email: string;
+    password: string;
+}
+
 function Landing() {
 
-    const [totalConnections, setTotalConnections] = useState(0);
-    const [ email, setEmail ] = useState("");
-    const [ password, setPassword ] = useState("");
-    const [ passwordShown, setPasswordShown ] = useState(false);
-
+    const { register, handleSubmit, errors } = useForm<LoginValues>({ mode: "onBlur" });
+    const [passwordShown, setPasswordShown] = useState(false);
     let history = useHistory();
 
     function togglePasswordVisible() {
         setPasswordShown(!passwordShown);
     }
 
-    useEffect(() => {
-        api.get("connections").then(response => {
-            const { total } = response.data;
-            setTotalConnections(total);
-        })
-    }, []);
-
-    function handleLogin(event: FormEvent) {
-        event.preventDefault()
-
+    function onSubmit(data: LoginValues) {
+        const { email, password } = data;
         const credentials = Buffer.from(`${email}:${password}`, "utf-8").toString("base64");
 
-        api.get("login", { headers: {
-            "Authorization": `Basic ${credentials}`
-        }})
-        .then((response) => {
-
-            const { userId, token } = response.data;
-
-            localStorage.setItem("token", token);
-            history.push(`/home/${userId}`)
-        }).catch((reject) => {
-            console.log(reject)
-            alert("Falha ao efetuar o login!")
+        api.get("login", {
+            headers: {
+                "Authorization": `Basic ${credentials}`
+            }
         })
+            .then((response) => {
+                const { userId, token } = response.data;
+                localStorage.setItem("token", token);
+                history.push(`/home/${userId}`)
+            }).catch((reject) => {
+                console.log(reject)
+                alert("Falha ao efetuar o login!")
+            })
     }
 
     return (
@@ -54,26 +49,45 @@ function Landing() {
         <div id="page-container">
             <Logo />
             <div className="form-container">
-                <form onSubmit={handleLogin}>
+                <form onSubmit={handleSubmit(onSubmit)}>
                     <fieldset>
                         <legend>Faça o login</legend>
                         <div className="input-group">
-                            <input placeholder="E-mail"
-                                    type="email"
-                                    value={email}
-                                    onChange = {event => setEmail(event.target.value)}
+                            <input
+                                name="email"
+                                placeholder="E-mail"
+                                type="text"
+                                ref={register({ required: true, pattern: /\S+@\S+\.\S+/ })}
                             />
+                            {errors.email && errors.email.type === "required" && (
+                                <p className="warn-message">
+                                    <FiAlertOctagon size={20} color="#FFF" />
+                                    Preencha esse campo.
+                                </p>
+                            )}
+                            {errors.email && errors.email.type === "pattern" && (
+                                <p className="warn-message">
+                                    <FiAlertOctagon size={20} color="#FFF" />
+                                    E-mail inválido
+                                </p>
+                            )}
                             <div className="password-input-content">
                                 <input
+                                    name="password"
                                     type={passwordShown ? "text" : "password"}
                                     placeholder="Senha"
-                                    value={password}
-                                    onChange={event => setPassword(event.target.value)}
+                                    ref={register({ required: true })}
                                 />
                                 <image type="button" onClick={togglePasswordVisible}>
                                     {passwordShown ? <FiEyeOff /> : <FiEye />}
                                 </image>
                             </div>
+                            {errors.password && (
+                                <p className="warn-message">
+                                    <FiAlertOctagon size={20} color="#FFF" />
+                                    Preencha esse campo.
+                                </p>
+                            )}
                         </div>
                         <div className="passwords-options-container">
                             <div className="checkbox-container">

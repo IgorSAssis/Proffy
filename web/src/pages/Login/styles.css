@@ -50,7 +50,7 @@ span {
 .form-container form .register{
     display: flex;
     justify-content: space-between;
-    margin: 100px 0 -100px 0;
+    margin: 80px 0 -55px 0;
 }
 
 .form-container form .register span > img{
@@ -113,6 +113,21 @@ span {
     font-size: 24px;
     cursor: pointer;
     color: var(--color-primary);
+}
+
+.form-container form fieldset .input-group p.warn-message {
+    width: 93%;
+    margin: 5px 0 5px 1px;
+    padding: 6px 16px;
+    font-size: 12px;
+
+    background-color: rgba(255, 0, 0, 0.7);
+    border-radius: 12px;
+    color: #FFF;
+
+    display: flex;
+    align-items: center;
+    gap: 10px;
 }
 
 .form-container form fieldset .input-group input{
