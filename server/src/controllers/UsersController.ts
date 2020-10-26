@@ -7,7 +7,7 @@ export default class {
 
     async index(request: Request, response: Response) {
 
-        const users = await database("users").select("id", "name" ,"surname", "avatar", "bio", "whatsapp", "email");
+        const users = await database("users").select("id", "name", "surname", "avatar", "bio", "whatsapp", "email");
         return response.status(200).json(users);
 
     }
@@ -15,7 +15,7 @@ export default class {
     async show(request: Request, response: Response) {
 
         const { id } = request.params;
-        const [ userData ] = await database("users").select("name", "surname", "email", "bio", "whatsapp", "avatar").where("id", "=", id);
+        const [userData] = await database("users").select("name", "surname", "email", "bio", "whatsapp", "avatar").where("id", "=", id);
         return response.status(200).json(userData);
 
     }
@@ -51,5 +51,26 @@ export default class {
                 })
             }
         })
+    }
+
+    async update(request: Request, response: Response) {
+
+        const { id } = request.params;
+
+        const { name,
+            surname,
+            email,
+            bio,
+            whatsapp,
+            avatar
+        } = request.body;
+
+        const result = await database("users").where("id", "=", id).update({ name, surname, email, bio, whatsapp, avatar });
+
+        if(!result) {
+            return response.status(500).json({ message: "Update failed." })
+        }
+
+        return response.status(200);
     }
 }

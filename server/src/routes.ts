@@ -23,6 +23,7 @@ routes.post("/connections", connectionsController.create);
 
 routes.get("/users", usersController.index);
 routes.get("/users/:id", usersController.show)
+routes.put("/users/:id", usersController.update)
 routes.post("/signUp", usersController.create);
 
 routes.get("/login", signupController.index);

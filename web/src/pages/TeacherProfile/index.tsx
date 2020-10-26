@@ -32,12 +32,31 @@ function TeacherProfile() {
     ]);
 
     const params = useParams<UserId>();
-    const [teacherProfile, setTeacherProfile] = useState<UserProfile>()
+
+    const [name, setName] = useState("");
+    const [surname, setSurname] = useState("");
+    const [email, setEmail] = useState("");
+    const [whatsapp, setWhatsapp] = useState("");
+    const [bio, setBio] = useState("");
+    const [avatar, setAvatar] = useState("");
 
     useEffect(() => {
         api.get(`users/${params.id}`)
             .then(response => {
-                setTeacherProfile(response.data);
+                const { name,
+                    surname,
+                    email,
+                    whatsapp,
+                    bio,
+                    avatar
+                } = response.data;
+
+                setName(name);
+                setSurname(surname);
+                setEmail(email);
+                setWhatsapp(whatsapp);
+                setBio(bio);
+                setAvatar(avatar)
             })
             .catch(reject => {
                 console.warn(reject)
@@ -45,8 +64,12 @@ function TeacherProfile() {
             })
     }, [])
 
-    if (!teacherProfile) {
+    if (!name) {
         return <p>Loading.....</p>
+    }
+
+    function handleUpdateProfile() {
+
     }
 
     function setScheduleItemValue(position: number, fieldName: string, value: string) {
@@ -68,19 +91,19 @@ function TeacherProfile() {
                 <HeaderBar currentPage="Meu perfil" />
                 <div className="teacher-image-container">
                     <div className="teacher-photo-wrapper">
-                        {teacherProfile.avatar
+                        {avatar
                             ? (
-                                <img src={teacherProfile.avatar} alt="Teacher avatar" />
+                                <img src={avatar} alt="Teacher avatar" />
                             ) : (
                                 <div className="no-avatar">
                                     <FiUser color="#FFF" size={100} />
                                 </div>
-                        )}
+                            )}
                         <button type="button">
                             <FiCamera color="#FFF" size={24} />
                         </button>
                     </div>
-                    <h1>{`${teacherProfile.name} ${teacherProfile.surname}`}</h1>
+                    <h1>{`${name} ${surname}`}</h1>
                     <h4>Geografia</h4>
                 </div>
             </div>
@@ -91,16 +114,43 @@ function TeacherProfile() {
                         <legend>Seus dados</legend>
 
                         <div className="name-surname-wrapper">
-                            <Input name="name" label="Nome" value={teacherProfile.name} />
-                            <Input name="surname" label="Sobrenome" value={teacherProfile.surname} />
+                            <Input
+                                name="name"
+                                label="Nome"
+                                value={name}
+                                onChange={event => setName(event.target.value)}
+                            />
+                            <Input
+                                name="surname"
+                                label="Sobrenome"
+                                value={surname}
+                                onChange={event => setSurname(event.target.value)}
+                            />
                         </div>
 
                         <div className="email-whatsapp-wrapper">
-                            <Input name="email" label="E-mail" type="email" value={teacherProfile.email} />
-                            <Input name="whatsapp" label="Whatsapp" placeholder="(DDD) xxxxx - xxxx" value={teacherProfile.whatsapp} />
+                            <Input
+                                name="email"
+                                label="E-mail"
+                                type="email"
+                                value={email}
+                                onChange={event => setEmail(event.target.value)}
+                            />
+                            <Input
+                                name="whatsapp"
+                                label="Whatsapp"
+                                placeholder="(DDD) xxxxx - xxxx"
+                                value={whatsapp}
+                                onChange={event => setWhatsapp(event.target.value)}
+                            />
                         </div>
 
-                        <TextArea name="bio" label="Biografia" value={teacherProfile.bio} />
+                        <TextArea
+                            name="bio"
+                            label="Biografia"
+                            value={bio}
+                            onChange={event => setBio(event.target.value)}
+                        />
                     </fieldset>
 
                     <fieldset>
@@ -108,7 +158,7 @@ function TeacherProfile() {
 
                         <div className="about-class-wrapper">
                             <Input name="subject" label="Matéria" />
-                            <Input name="costPerHour" label="Custo da sua hora por aula" defaultValue="R$ "  />
+                            <Input name="costPerHour" label="Custo da sua hora por aula" defaultValue="R$ " />
                         </div>
 
                     </fieldset>
@@ -164,7 +214,7 @@ function TeacherProfile() {
                             Importante!<br />
                             Preencha todos os dados
                     </p>
-                        <button type="submit" >
+                        <button type="submit" onClick={handleUpdateProfile} >
                             Salvar cadastro
                     </button>
                     </footer>
