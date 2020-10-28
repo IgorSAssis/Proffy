@@ -125,6 +125,8 @@
     padding: 0 5rem;
 }
 
+
+
 #page-teacher-profile main form fieldset:nth-child(1) .name-surname-wrapper {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -150,8 +152,9 @@
     grid-template-columns: 2fr 1fr 1fr;
     column-gap: 1.6rem;
 }
-#page-teacher-profile main form fieldset:nth-child(1) .name-surname-wrapper .input-block,
-#page-teacher-profile main form fieldset:nth-child(1) .email-whatsapp-wrapper .input-block,
+
+#page-teacher-profile main form fieldset:nth-child(1) .name-surname-wrapper .input-block-wrapper .input-block,
+#page-teacher-profile main form fieldset:nth-child(1) .email-whatsapp-wrapper .input-block-wrapper .input-block,
 #page-teacher-profile main form fieldset:nth-child(2) .about-class-wrapper .input-block,
 #page-teacher-profile main form fieldset:nth-child(3) .schedule-item .input-block{
     margin-top: 0 !important;

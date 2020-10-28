@@ -1,6 +1,7 @@
 import React, { useState, FormEvent, useEffect } from "react";
 import { useHistory, useParams } from "react-router-dom";
 import { FiUser } from "react-icons/fi"
+import { useForm } from "react-hook-form";
 
 import PageHeader from "../../components/PageHeader/index";
 import Input from "../../components/Input/index";
@@ -121,9 +122,19 @@ function TeacherForm() {
                                     )}
                                 <strong>{`${name} ${surname}`}</strong>
                             </div>
-                            <Input name="whatsapp" label="WhatsApp" value={whatsapp} onChange={(event) => { setWhatsapp(event.target.value) }} />
+                            <Input
+                                name="whatsapp"
+                                label="WhatsApp"
+                                value={whatsapp}
+                                onChange={(event) => { setWhatsapp(event.target.value) }}
+                            />
                         </div>
-                        <Textarea name="bio" label="Biografia" value={bio} onChange={(event) => { setBio(event.target.value) }} />
+                        <Textarea
+                            name="bio"
+                            label="Biografia"
+                            value={bio}
+                            onChange={(event) => { setBio(event.target.value) }}
+                        />
 
                     </fieldset>
 

@@ -9,6 +9,7 @@ import "./styles.css";
 
 import purpleHeartIcon from "../../assets/images/icons/purple-heart.svg";
 import Logo from "../../components/Logo";
+import ErrorMessage from "../../components/ErrorMessage/index"
 
 type LoginValues = {
     email: string;
@@ -60,16 +61,10 @@ function Landing() {
                                 ref={register({ required: true, pattern: /\S+@\S+\.\S+/ })}
                             />
                             {errors.email && errors.email.type === "required" && (
-                                <p className="warn-message">
-                                    <FiAlertOctagon size={20} color="#FFF" />
-                                    Preencha esse campo.
-                                </p>
+                                <ErrorMessage message="Preencha esse campo!" />
                             )}
                             {errors.email && errors.email.type === "pattern" && (
-                                <p className="warn-message">
-                                    <FiAlertOctagon size={20} color="#FFF" />
-                                    E-mail inválido
-                                </p>
+                                <ErrorMessage message="E-mail inválido" />
                             )}
                             <div className="password-input-content">
                                 <input
@@ -83,10 +78,7 @@ function Landing() {
                                 </image>
                             </div>
                             {errors.password && (
-                                <p className="warn-message">
-                                    <FiAlertOctagon size={20} color="#FFF" />
-                                    Preencha esse campo.
-                                </p>
+                                <ErrorMessage message="Preencha esse campo!" />
                             )}
                         </div>
                         <div className="passwords-options-container">

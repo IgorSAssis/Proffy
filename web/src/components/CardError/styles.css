@@ -1,6 +1,6 @@
 div.card-error {
     width: 240px;
-    height: 66px;
+    height: 55px;
     padding: 4px;
     background-color: rgba(255, 0, 0, 0.7);
 
@@ -8,26 +8,26 @@ div.card-error {
 
     position: absolute;
     right: -200px;
-    top: 3px;
+    top: 9px;
 
     z-index: 10;
 
     display: flex;
+    align-items: center;
+    justify-content: center;
     gap: 10px;
 }
 
 div.card-error div {
-    position: relative;
-    top: 15px;
-    left: 6px;
+
 }
 
 div.card-error::before {
     content: "";   
     position: absolute;
-    top: 16.5px;
-    left: -32px;
-    border-width: 16px;
+    top: 12.5px;
+    left: -28px;
+    border-width: 14px;
     border-style: solid;
     border-color: transparent rgba(255, 0, 0, 0.7) transparent transparent;
 }

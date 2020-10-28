@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom"
-import { FiCamera, FiUser } from "react-icons/fi";
+import { FiCamera, FiUser, FiAlertOctagon } from "react-icons/fi";
+import { useForm } from "react-hook-form";
 
 import "./styles.css";
 import warning from "../../assets/images/icons/warning.svg";
@@ -9,6 +10,7 @@ import Input from "../../components/Input/index";
 import TextArea from "../../components/Textarea/index";
 import Select from "../../components/Select/index";
 import HeaderBar from "../../components/HeaderBar/index";
+import ErrorMessage from "../../components/ErrorMessage/index"
 
 import api from "../../services/api"
 
@@ -16,16 +18,19 @@ interface UserId {
     id: string;
 }
 
-interface UserProfile {
+type UserProfile = {
     name: string;
     surname: string;
     whatsapp: string;
     bio: string;
     avatar: string;
     email: string;
+    subject?: string;
+    costPerHour?: string;
 }
 
 function TeacherProfile() {
+
 
     const [scheduleItems, setScheduleItem] = useState([
         { week_day: 0, from: "", to: "" }
@@ -33,17 +38,18 @@ function TeacherProfile() {
 
     const params = useParams<UserId>();
 
+    const { register, handleSubmit, setValue, getValues, errors } = useForm<UserProfile>();
+
     const [name, setName] = useState("");
     const [surname, setSurname] = useState("");
-    const [email, setEmail] = useState("");
-    const [whatsapp, setWhatsapp] = useState("");
-    const [bio, setBio] = useState("");
     const [avatar, setAvatar] = useState("");
 
     useEffect(() => {
         api.get(`users/${params.id}`)
             .then(response => {
-                const { name,
+
+                const {
+                    name,
                     surname,
                     email,
                     whatsapp,
@@ -51,25 +57,30 @@ function TeacherProfile() {
                     avatar
                 } = response.data;
 
-                setName(name);
-                setSurname(surname);
-                setEmail(email);
-                setWhatsapp(whatsapp);
-                setBio(bio);
-                setAvatar(avatar)
+                setValue("name", name)
+                setValue("surname", surname)
+                setValue("email", email)
+                setValue("whatsapp", whatsapp)
+                setValue("bio", bio)
+                setValue("avatar", avatar)
+
+                setName(getValues("name"));
+                setSurname(getValues("surname"))
+                setAvatar(getValues("avatar"))
+
             })
             .catch(reject => {
                 console.warn(reject)
                 alert("Houve algum erro inesperado.")
             })
-    }, [])
+    }, [params.id])
 
-    if (!name) {
-        return <p>Loading.....</p>
+    if(!getValues()) {
+        return <p>Loading...</p>
     }
 
-    function handleUpdateProfile() {
-
+    function onSubmit(data: UserProfile) {
+        console.log(data)
     }
 
     function setScheduleItemValue(position: number, fieldName: string, value: string) {
@@ -109,56 +120,100 @@ function TeacherProfile() {
             </div>
 
             <main>
-                <form>
+                <form onSubmit={handleSubmit(onSubmit)}>
                     <fieldset>
                         <legend>Seus dados</legend>
 
                         <div className="name-surname-wrapper">
-                            <Input
-                                name="name"
-                                label="Nome"
-                                value={name}
-                                onChange={event => setName(event.target.value)}
-                            />
-                            <Input
-                                name="surname"
-                                label="Sobrenome"
-                                value={surname}
-                                onChange={event => setSurname(event.target.value)}
-                            />
+                            <div className="input-block-wrapper">
+                                <Input
+                                    name="name"
+                                    label="Nome"
+                                    register={register({ required: true })}
+                                />
+                                {errors.name && errors.name.type === "required" && (
+                                    <ErrorMessage message="Campo obrigatório!" />
+                                )}
+                            </div>
+
+                            <div className="input-block-wrapper">
+                                <Input
+                                    name="surname"
+                                    label="Sobrenome"
+                                    register={register({ required: true })}
+                                />
+                                {errors.surname && errors.surname.type === "required" && (
+                                    <ErrorMessage message="Campo obrigatório!" />
+                                )}
+                            </div>
                         </div>
 
                         <div className="email-whatsapp-wrapper">
-                            <Input
-                                name="email"
-                                label="E-mail"
-                                type="email"
-                                value={email}
-                                onChange={event => setEmail(event.target.value)}
-                            />
-                            <Input
-                                name="whatsapp"
-                                label="Whatsapp"
-                                placeholder="(DDD) xxxxx - xxxx"
-                                value={whatsapp}
-                                onChange={event => setWhatsapp(event.target.value)}
-                            />
+                            <div className="input-block-wrapper">
+                                <Input
+                                    name="email"
+                                    label="E-mail"
+                                    register={register({ required: true, pattern: /\S+@\S+\.\S+/ })}
+                                />
+                                {errors.email && errors.email.type === "required" && (
+                                    <ErrorMessage message="Campo obrigatório!" />
+                                )}
+                                {errors.email && errors.email.type === "pattern" && (
+                                    <ErrorMessage message="E-mail inválido!" />
+                                )}
+                            </div>
+                            <div className="input-block-wrapper">
+                                <Input
+                                    name="whatsapp"
+                                    label="Whatsapp"
+                                    placeholder="(DDD) xxxxx - xxxx"
+                                    register={register({ required: true })}
+                                />
+                                {errors.whatsapp && errors.whatsapp.type === "required" && (
+                                    <ErrorMessage message="Campo obrigatório!" />
+                                )}
+                            </div>
+
                         </div>
 
-                        <TextArea
-                            name="bio"
-                            label="Biografia"
-                            value={bio}
-                            onChange={event => setBio(event.target.value)}
-                        />
+                        <div className="textarea-block-wrapper">
+                            <TextArea
+                                name="bio"
+                                label="Biografia"
+                                register={register({ required: true })}
+                            />
+                            {errors.bio && errors.bio.type === "required" && (
+                                <ErrorMessage message="Campo obrigatório!" />
+                            )}
+                        </div>
+
                     </fieldset>
 
                     <fieldset>
                         <legend>Sobre a aula</legend>
 
                         <div className="about-class-wrapper">
-                            <Input name="subject" label="Matéria" />
-                            <Input name="costPerHour" label="Custo da sua hora por aula" defaultValue="R$ " />
+                            <div className="input-block-wrapper">
+                                <Input
+                                    name="subject"
+                                    label="Matéria"
+                                    register={register({ required: true })}
+                                />
+                                {errors.subject && errors.subject.type === "required" && (
+                                    <ErrorMessage message="Campo obrigatório!" />
+                                )}
+                            </div>
+                            <div className="input-block-wrapper">
+                                <Input
+                                    name="costPerHour"
+                                    label="Custo da sua hora por aula"
+                                    placeholder="R$ "
+                                    register={register({ required: true })}
+                                />
+                                {errors.costPerHour && errors.costPerHour.type === "required" && (
+                                    <ErrorMessage message="Campo obrigatório!" />
+                                )}
+                            </div>
                         </div>
 
                     </fieldset>
@@ -214,7 +269,7 @@ function TeacherProfile() {
                             Importante!<br />
                             Preencha todos os dados
                     </p>
-                        <button type="submit" onClick={handleUpdateProfile} >
+                        <button type="submit" onClick={() => { }} >
                             Salvar cadastro
                     </button>
                     </footer>

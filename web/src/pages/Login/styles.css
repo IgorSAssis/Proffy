@@ -115,21 +115,6 @@ span {
     color: var(--color-primary);
 }
 
-.form-container form fieldset .input-group p.warn-message {
-    width: 93%;
-    margin: 5px 0 5px 1px;
-    padding: 6px 16px;
-    font-size: 12px;
-
-    background-color: rgba(255, 0, 0, 0.7);
-    border-radius: 12px;
-    color: #FFF;
-
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
 .form-container form fieldset .input-group input{
     outline: none;
 }
