@@ -1,13 +1,14 @@
 import React, { useState, FormEvent, useEffect } from "react";
 import { useHistory, useParams } from "react-router-dom";
 import { FiUser } from "react-icons/fi"
-import { useForm } from "react-hook-form";
+import { useForm, useFieldArray } from "react-hook-form";
 
 import PageHeader from "../../components/PageHeader/index";
 import Input from "../../components/Input/index";
 import Textarea from "../../components/Textarea/index";
 import Select from "../../components/Select/index";
 import HeaderBar from "../../components/HeaderBar/index"
+import ErrorMessage from "../../components/ErrorMessage/index"
 
 import "./styles.css";
 import warnIcon from "../../assets/images/icons/warning.svg";
@@ -17,21 +18,37 @@ interface UserId {
     id: string;
 }
 
+type TeacherFormProps = {
+    subject: string;
+    cost: string;
+    scheduleItem: Array<{
+        id: number;
+        dayOfWeek: string;
+        from: string;
+        to: string;
+    }>
+}
+
 function TeacherForm() {
 
     const history = useHistory();
     const params = useParams<UserId>();
+    const { register, control, handleSubmit, errors } = useForm<TeacherFormProps>();
+    const { fields, append, remove } = useFieldArray({
+        control,
+        name: "scheduleItems"
+    });
 
     const [scheduleItems, setScheduleItem] = useState([
-        { week_day: 0, from: "", to: "" }
+        { order: 0, week_day: 0, from: "", to: "" }
     ]);
+    const [scheduleItemId, setScheduleItemId] = useState(0);
 
     const [name, setName] = useState("");
     const [surname, setSurname] = useState("");
     const [avatar, setAvatar] = useState("");
     const [whatsapp, setWhatsapp] = useState("");
     const [bio, setBio] = useState("");
-
     const [subject, setSubject] = useState("");
     const [cost, setCost] = useState("");
 
@@ -56,13 +73,6 @@ function TeacherForm() {
             })
     }, [params.id])
 
-    function addNewScheduleItem() {
-        setScheduleItem([
-            ...scheduleItems,
-            { week_day: 0, from: "", to: "" }
-        ])
-    }
-
     function handleCreateClass(event: FormEvent) {
         event.preventDefault();
 
@@ -84,15 +94,8 @@ function TeacherForm() {
             })
     }
 
-    function setScheduleItemValue(position: number, fieldName: string, value: string) {
-        const updatedScheduleItem = scheduleItems.map((scheduleItem, index) => {
-            if (index === position) {
-                return { ...scheduleItem, [fieldName]: value }
-            }
-            return scheduleItem;
-        })
-        console.log(updatedScheduleItem)
-        setScheduleItem(updatedScheduleItem)
+    function onSubmit(data: TeacherFormProps) {
+        console.log(data)
     }
 
     return (
@@ -107,7 +110,7 @@ function TeacherForm() {
             />
 
             <main>
-                <form onSubmit={handleCreateClass}>
+                <form onSubmit={handleSubmit(onSubmit)}>
                     <fieldset>
                         <legend>Seus Dados</legend>
                         <div className="teacher-form-data-wrapper">
@@ -127,6 +130,7 @@ function TeacherForm() {
                                 label="WhatsApp"
                                 value={whatsapp}
                                 onChange={(event) => { setWhatsapp(event.target.value) }}
+                                disabled
                             />
                         </div>
                         <Textarea
@@ -134,6 +138,7 @@ function TeacherForm() {
                             label="Biografia"
                             value={bio}
                             onChange={(event) => { setBio(event.target.value) }}
+                            disabled
                         />
 
                     </fieldset>
@@ -141,74 +146,123 @@ function TeacherForm() {
                     <fieldset>
                         <legend>Sobre a aula</legend>
                         <div className="teacher-form-about-class-wrapper">
-                            <Select
-                                name="subject"
-                                label="Matéria"
-                                defaultOption="Selecione uma matéria"
-                                value={subject}
-                                onChange={(event) => { setSubject(event.target.value) }}
-                                options={[
-                                    { value: "Artes", label: "Artes" },
-                                    { value: "Biologia", label: "Biologia" },
-                                    { value: "Química", label: "Química" },
-                                    { value: "Educação física", label: "Educação física" },
-                                    { value: "Matemática", label: "Matemática" },
-                                    { value: "Português", label: "Português" },
-                                    { value: "História", label: "História" },
-                                    { value: "Geografia", label: "Geografia" }
-                                ]}
-                            />
-                            <Input
-                                name="cost"
-                                label="Custo da sua hora por aula"
-                                value={cost}
-                                onChange={(event) => { setCost(event.target.value) }}
-                                placeholder="R$ "
-                            />
+
+                            <div className="select-block-wrapper">
+                                <Select
+                                    name="subject"
+                                    label="Matéria"
+                                    defaultOption="Selecione uma matéria"
+                                    register={register({ required: true })}
+                                    aria-invalid={errors.subject ? "true" : "false"}
+                                    options={[
+                                        { value: "Artes", label: "Artes" },
+                                        { value: "Biologia", label: "Biologia" },
+                                        { value: "Química", label: "Química" },
+                                        { value: "Educação física", label: "Educação física" },
+                                        { value: "Matemática", label: "Matemática" },
+                                        { value: "Português", label: "Português" },
+                                        { value: "História", label: "História" },
+                                        { value: "Geografia", label: "Geografia" }
+                                    ]}
+                                />
+                                {errors.subject && errors.subject.type === "required" && (
+                                    <ErrorMessage message="Campo obrigatório!" />
+                                )}
+                            </div>
+
+                            <div className="input-block-wrapper">
+                                <Input
+                                    name="cost"
+                                    label="Custo da sua hora por aula"
+                                    register={register({ required: true })}
+                                    placeholder="R$ "
+                                    type="number"
+                                    aria-invalid={errors.cost ? "true" : "false"}
+                                />
+                                {errors.cost && errors.cost.type === "required" && (
+                                    <ErrorMessage message="Campo obrigatório!" />
+                                )}
+                            </div>
                         </div>
                     </fieldset>
-
                     <fieldset>
                         <legend>
                             Horários disponíveis
-                        <button type="button" onClick={addNewScheduleItem}>
+                        <button type="button" onClick={() => {
+                                append({ id: scheduleItemId, dayOfWeek: 0, from: "22:00", to: "23:00" })
+                                setScheduleItemId(scheduleItemId + 1);
+                            }}>
                                 + Novo horário
                             </button>
                         </legend>
-
-                        {scheduleItems.map((scheduleItem, index) => {
+                        {fields.map((field, index) => {
                             return (
-                                <div key={scheduleItem.week_day} className="schedule-item">
-                                    <Select
-                                        name="day-of-week"
-                                        label="Dia da semana"
-                                        defaultOption="Selecione um dia"
-                                        value={scheduleItem.week_day}
-                                        onChange={event => setScheduleItemValue(index, "week_day", event.target.value)}
-                                        options={[
-                                            { value: "0", label: "Domingo" },
-                                            { value: "1", label: "Segunda-feira" },
-                                            { value: "2", label: "Terça-feira" },
-                                            { value: "3", label: "Quarta-feira" },
-                                            { value: "4", label: "Quinta-feira" },
-                                            { value: "5", label: "Sexta-feira" },
-                                            { value: "6", label: "Sábado" }
-                                        ]}
-                                    />
-                                    <Input
-                                        name="from"
-                                        label="Das"
-                                        type="time"
-                                        value={scheduleItem.from}
-                                        onChange={event => setScheduleItemValue(index, "from", event.target.value)}
-                                    />
-                                    <Input
-                                        name="to"
-                                        label="Até"
-                                        type="time"
-                                        value={scheduleItem.to}
-                                        onChange={event => setScheduleItemValue(index, "to", event.target.value)}
-                                    />
+                                <div key={field.id} className="schedule-item">
+                                    <div className="select-block-wrapper">
+                                        <Select
+                                            name={`scheduleItem[${index}].dayOfWeek`}
+                                            label="Dia da semana"
+                                            defaultOption={field.dayOfWeek}
+                                            register={register({ required: true })}
+                                            aria-invalid={(errors.scheduleItem !== undefined && errors.scheduleItem[index]?.dayOfWeek) ? "true" : "false"}
+                                            options={[
+                                                { value: "0", label: "Domingo" },
+                                                { value: "1", label: "Segunda-feira" },
+                                                { value: "2", label: "Terça-feira" },
+                                                { value: "3", label: "Quarta-feira" },
+                                                { value: "4", label: "Quinta-feira" },
+                                                { value: "5", label: "Sexta-feira" },
+                                                { value: "6", label: "Sábado" }
+                                            ]}
+                                        />
+                                        {
+                                            errors.scheduleItem !== undefined &&
+                                            errors.scheduleItem[index]?.dayOfWeek &&
+                                            errors.scheduleItem[index]?.dayOfWeek?.type === "required" &&
+                                            (
+                                                <ErrorMessage message="Selecione um dia da semana!" />
+                                            )
+                                        }
+                                    </div>
+                                    <div className="input-block-wrapper">
+                                        <Input
+                                            name={`scheduleItem[${index}].from`}
+                                            label="Das"
+                                            type="time"
+                                            defaultValue={field.from}
+                                            register={register({ required: true })}
+                                            aria-invalid={errors.scheduleItem !== undefined && errors.scheduleItem[index]?.from ? "true" : "false"}
+                                        />
+                                        {
+                                            errors.scheduleItem !== undefined &&
+                                            errors.scheduleItem[index]?.from &&
+                                            errors.scheduleItem[index]?.from?.type === "required" &&
+                                            (
+                                                <ErrorMessage message="Defina um horário!" />
+                                            )
+                                        }
+                                    </div>
+
+                                    <div className="input-block-wrapper">
+                                        <Input
+                                            name={`scheduleItem[${index}].to`}
+                                            label="Até"
+                                            type="time"
+                                            defaultValue={field.to}
+                                            register={register({ required: true })}
+                                            aria-invalid={errors.scheduleItem !== undefined && errors.scheduleItem[index]?.to ? "true" : "false"}
+                                        />
+                                        {
+                                            errors.scheduleItem !== undefined &&
+                                            errors.scheduleItem[index]?.to &&
+                                            errors.scheduleItem[index]?.to?.type === "required" &&
+                                            (
+                                                <ErrorMessage message="Defina um horário!" />
+                                            )
+                                        }
+                                    </div>
+
+                                    <button onClick={() => remove(index)} type="button">Excluir horário</button>
                                 </div>
                             )
                         })}

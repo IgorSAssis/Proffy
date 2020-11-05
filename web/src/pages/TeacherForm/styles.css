@@ -35,7 +35,7 @@
     margin-right: 20px;
 }
 
-#page-teacher-form main fieldset:first-child .teacher-form-data-wrapper .teacher-data-wrapper div.no-avatar{
+#page-teacher-form main fieldset:first-child .teacher-form-data-wrapper .teacher-data-wrapper div.no-avatar {
     width: 75px;
     height: 75px;
     border-radius: 50px;
@@ -73,7 +73,7 @@
     color: var(--color-text-complement);
 }
 
-#page-teacher-form main fieldset + fieldset {
+#page-teacher-form main fieldset+fieldset {
     margin-top: 6.4rem;
 }
 
@@ -102,9 +102,30 @@
     color: var(--color-primary-dark);
 }
 
-#page-teacher-form main fieldset .input-block + .textarea-block,
-#page-teacher-form main fieldset .select-block + .input-block {
+#page-teacher-form main fieldset .input-block+.textarea-block,
+#page-teacher-form main fieldset .select-block+.input-block {
     margin-top: 2.4rem;
+}
+
+#page-teacher-form main fieldset:nth-child(3) div.schedule-item {
+    border-bottom: 1px solid var(--color-line-in-white);
+    position: relative;
+    padding-bottom: 45px;
+    margin-bottom: 4rem;
+}
+
+#page-teacher-form main fieldset:nth-child(3) div.schedule-item button {
+    background-color: #FFF;
+    color: red;
+    border: none;
+    cursor: pointer;
+
+    position: absolute;
+    bottom: -10px;
+    left: 225px;
+
+    padding: 0 20px;
+
 }
 
 #page-teacher-form main footer {

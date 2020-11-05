@@ -18,7 +18,7 @@ type LoginValues = {
 
 function Landing() {
 
-    const { register, handleSubmit, errors } = useForm<LoginValues>({ mode: "onBlur" });
+    const { register, handleSubmit, errors } = useForm<LoginValues>();
     const [passwordShown, setPasswordShown] = useState(false);
     let history = useHistory();
 

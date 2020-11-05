@@ -31,18 +31,29 @@ type UserProfile = {
 
 function TeacherProfile() {
 
+    const params = useParams<UserId>();
 
     const [scheduleItems, setScheduleItem] = useState([
         { week_day: 0, from: "", to: "" }
     ]);
-
-    const params = useParams<UserId>();
-
-    const { register, handleSubmit, setValue, getValues, errors } = useForm<UserProfile>();
-
     const [name, setName] = useState("");
     const [surname, setSurname] = useState("");
     const [avatar, setAvatar] = useState("");
+
+    function setProfileData(name: string, surname: string, avatar: string, email: string, whatsapp: string, bio: string) {
+        setValue("name", name);
+        setValue("surname", surname);
+        setValue("avatar", avatar);
+        setValue("email", email);
+        setValue("whatsapp", whatsapp);
+        setValue("bio", bio);
+
+        setAvatar(avatar)
+        setName(name)
+        setSurname(surname)
+    }
+
+    const { register, handleSubmit, setValue, getValues, errors } = useForm<UserProfile>();
 
     useEffect(() => {
         api.get(`users/${params.id}`)
@@ -57,17 +68,7 @@ function TeacherProfile() {
                     avatar
                 } = response.data;
 
-                setValue("name", name)
-                setValue("surname", surname)
-                setValue("email", email)
-                setValue("whatsapp", whatsapp)
-                setValue("bio", bio)
-                setValue("avatar", avatar)
-
-                setName(getValues("name"));
-                setSurname(getValues("surname"))
-                setAvatar(getValues("avatar"))
-
+                setProfileData(name, surname, avatar, email, whatsapp, bio);
             })
             .catch(reject => {
                 console.warn(reject)
@@ -93,6 +94,8 @@ function TeacherProfile() {
         console.log(updatedScheduleItem)
         setScheduleItem(updatedScheduleItem)
     }
+
+
 
     return (
         <div id="page-teacher-profile">

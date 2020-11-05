@@ -33,6 +33,11 @@
     overflow: hidden;
 }
 
+#home-page-container .home-page-upper-content .upper-container .user-container .user-content .user-icon img {
+    width: 100%;
+    height: 100%;
+}
+
 #home-page-container .home-page-upper-content .upper-container .user-container .user-content .user-icon + a {
     color: #FFF;
     text-decoration-line: none;
