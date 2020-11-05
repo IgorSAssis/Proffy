@@ -50,7 +50,7 @@ span {
 .form-container form .register{
     display: flex;
     justify-content: space-between;
-    margin: 100px 0 -100px 0;
+    margin: 80px 0 -55px 0;
 }
 
 .form-container form .register span > img{

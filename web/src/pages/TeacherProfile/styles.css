@@ -66,6 +66,20 @@
     border-radius: 120px;
 }
 
+#page-teacher-profile .teacher-profile-upper-container .teacher-image-container .teacher-photo-wrapper div.no-avatar {
+    width: 180px;
+    height: 180px;
+    border: thin solid transparent;
+    border-radius: 120px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+    background-color: var(--color-primary-dark);
+    
+}
+
 #page-teacher-profile .teacher-profile-upper-container .teacher-image-container .teacher-photo-wrapper button {
     width: 50px;
     height: 50px;
@@ -111,6 +125,8 @@
     padding: 0 5rem;
 }
 
+
+
 #page-teacher-profile main form fieldset:nth-child(1) .name-surname-wrapper {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -136,8 +152,9 @@
     grid-template-columns: 2fr 1fr 1fr;
     column-gap: 1.6rem;
 }
-#page-teacher-profile main form fieldset:nth-child(1) .name-surname-wrapper .input-block,
-#page-teacher-profile main form fieldset:nth-child(1) .email-whatsapp-wrapper .input-block,
+
+#page-teacher-profile main form fieldset:nth-child(1) .name-surname-wrapper .input-block-wrapper .input-block,
+#page-teacher-profile main form fieldset:nth-child(1) .email-whatsapp-wrapper .input-block-wrapper .input-block,
 #page-teacher-profile main form fieldset:nth-child(2) .about-class-wrapper .input-block,
 #page-teacher-profile main form fieldset:nth-child(3) .schedule-item .input-block{
     margin-top: 0 !important;

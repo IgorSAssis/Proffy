@@ -1,5 +1,7 @@
-import React, { useState } from "react";
-import { FiCamera } from "react-icons/fi";
+import React, { useState, useEffect } from "react";
+import { useParams } from "react-router-dom"
+import { FiCamera, FiUser, FiAlertOctagon } from "react-icons/fi";
+import { useForm } from "react-hook-form";
 
 import "./styles.css";
 import warning from "../../assets/images/icons/warning.svg";
@@ -8,12 +10,79 @@ import Input from "../../components/Input/index";
 import TextArea from "../../components/Textarea/index";
 import Select from "../../components/Select/index";
 import HeaderBar from "../../components/HeaderBar/index";
+import ErrorMessage from "../../components/ErrorMessage/index"
+
+import api from "../../services/api"
+
+interface UserId {
+    id: string;
+}
+
+type UserProfile = {
+    name: string;
+    surname: string;
+    whatsapp: string;
+    bio: string;
+    avatar: string;
+    email: string;
+    subject?: string;
+    costPerHour?: string;
+}
 
 function TeacherProfile() {
+
+    const params = useParams<UserId>();
 
     const [scheduleItems, setScheduleItem] = useState([
         { week_day: 0, from: "", to: "" }
     ]);
+    const [name, setName] = useState("");
+    const [surname, setSurname] = useState("");
+    const [avatar, setAvatar] = useState("");
+
+    function setProfileData(name: string, surname: string, avatar: string, email: string, whatsapp: string, bio: string) {
+        setValue("name", name);
+        setValue("surname", surname);
+        setValue("avatar", avatar);
+        setValue("email", email);
+        setValue("whatsapp", whatsapp);
+        setValue("bio", bio);
+
+        setAvatar(avatar)
+        setName(name)
+        setSurname(surname)
+    }
+
+    const { register, handleSubmit, setValue, getValues, errors } = useForm<UserProfile>();
+
+    useEffect(() => {
+        api.get(`users/${params.id}`)
+            .then(response => {
+
+                const {
+                    name,
+                    surname,
+                    email,
+                    whatsapp,
+                    bio,
+                    avatar
+                } = response.data;
+
+                setProfileData(name, surname, avatar, email, whatsapp, bio);
+            })
+            .catch(reject => {
+                console.warn(reject)
+                alert("Houve algum erro inesperado.")
+            })
+    }, [params.id])
+
+    if(!getValues()) {
+        return <p>Loading...</p>
+    }
+
+    function onSubmit(data: UserProfile) {
+        console.log(data)
+    }
 
     function setScheduleItemValue(position: number, fieldName: string, value: string) {
         const updatedScheduleItem = scheduleItems.map((scheduleItem, index) => {
@@ -26,48 +95,128 @@ function TeacherProfile() {
         setScheduleItem(updatedScheduleItem)
     }
 
+
+
     return (
         <div id="page-teacher-profile">
 
             <div className="teacher-profile-upper-container">
 
-                <HeaderBar currentPage="Meu perfil"/>
+                <HeaderBar currentPage="Meu perfil" />
                 <div className="teacher-image-container">
                     <div className="teacher-photo-wrapper">
-                        <img src="https://avatars3.githubusercontent.com/u/53535028?s=460&u=5c8d9211e92350617aa6604ac57445a7dffdfa8b&v=4" alt="Teacher" />
+                        {avatar
+                            ? (
+                                <img src={avatar} alt="Teacher avatar" />
+                            ) : (
+                                <div className="no-avatar">
+                                    <FiUser color="#FFF" size={100} />
+                                </div>
+                            )}
                         <button type="button">
                             <FiCamera color="#FFF" size={24} />
                         </button>
                     </div>
-                    <h1>Igor Semphoski de Assis</h1>
+                    <h1>{`${name} ${surname}`}</h1>
                     <h4>Geografia</h4>
                 </div>
             </div>
 
             <main>
-                <form>
+                <form onSubmit={handleSubmit(onSubmit)}>
                     <fieldset>
                         <legend>Seus dados</legend>
 
                         <div className="name-surname-wrapper">
-                            <Input name="name" label="Nome" />
-                            <Input name="surname" label="Sobrenome" />
+                            <div className="input-block-wrapper">
+                                <Input
+                                    name="name"
+                                    label="Nome"
+                                    register={register({ required: true })}
+                                />
+                                {errors.name && errors.name.type === "required" && (
+                                    <ErrorMessage message="Campo obrigatório!" />
+                                )}
+                            </div>
+
+                            <div className="input-block-wrapper">
+                                <Input
+                                    name="surname"
+                                    label="Sobrenome"
+                                    register={register({ required: true })}
+                                />
+                                {errors.surname && errors.surname.type === "required" && (
+                                    <ErrorMessage message="Campo obrigatório!" />
+                                )}
+                            </div>
                         </div>
 
                         <div className="email-whatsapp-wrapper">
-                            <Input name="email" label="E-mail" type="email" />
-                            <Input name="whatsapp" label="Whatsapp" />
+                            <div className="input-block-wrapper">
+                                <Input
+                                    name="email"
+                                    label="E-mail"
+                                    register={register({ required: true, pattern: /\S+@\S+\.\S+/ })}
+                                />
+                                {errors.email && errors.email.type === "required" && (
+                                    <ErrorMessage message="Campo obrigatório!" />
+                                )}
+                                {errors.email && errors.email.type === "pattern" && (
+                                    <ErrorMessage message="E-mail inválido!" />
+                                )}
+                            </div>
+                            <div className="input-block-wrapper">
+                                <Input
+                                    name="whatsapp"
+                                    label="Whatsapp"
+                                    placeholder="(DDD) xxxxx - xxxx"
+                                    register={register({ required: true })}
+                                />
+                                {errors.whatsapp && errors.whatsapp.type === "required" && (
+                                    <ErrorMessage message="Campo obrigatório!" />
+                                )}
+                            </div>
+
                         </div>
 
-                        <TextArea name="bio" label="Biografia" />
+                        <div className="textarea-block-wrapper">
+                            <TextArea
+                                name="bio"
+                                label="Biografia"
+                                register={register({ required: true })}
+                            />
+                            {errors.bio && errors.bio.type === "required" && (
+                                <ErrorMessage message="Campo obrigatório!" />
+                            )}
+                        </div>
+
                     </fieldset>
 
                     <fieldset>
                         <legend>Sobre a aula</legend>
 
                         <div className="about-class-wrapper">
-                            <Input name="subject" label="Matéria" />
-                            <Input name="costPerHour" label="Custo da sua hora por aula" />
+                            <div className="input-block-wrapper">
+                                <Input
+                                    name="subject"
+                                    label="Matéria"
+                                    register={register({ required: true })}
+                                />
+                                {errors.subject && errors.subject.type === "required" && (
+                                    <ErrorMessage message="Campo obrigatório!" />
+                                )}
+                            </div>
+                            <div className="input-block-wrapper">
+                                <Input
+                                    name="costPerHour"
+                                    label="Custo da sua hora por aula"
+                                    placeholder="R$ "
+                                    register={register({ required: true })}
+                                />
+                                {errors.costPerHour && errors.costPerHour.type === "required" && (
+                                    <ErrorMessage message="Campo obrigatório!" />
+                                )}
+                            </div>
                         </div>
 
                     </fieldset>
@@ -123,7 +272,7 @@ function TeacherProfile() {
                             Importante!<br />
                             Preencha todos os dados
                     </p>
-                        <button type="submit" >
+                        <button type="submit" onClick={() => { }} >
                             Salvar cadastro
                     </button>
                     </footer>

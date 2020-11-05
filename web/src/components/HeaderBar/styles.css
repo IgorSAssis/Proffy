@@ -14,3 +14,9 @@ header span {
 header img {
     width: 50px;
 }
+
+header button {
+    background-color: var(--color-primary-dark);
+    border: none;
+    cursor: pointer;
+}

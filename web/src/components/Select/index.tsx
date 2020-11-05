@@ -10,14 +10,15 @@ interface SelectProps extends SelectHTMLAttributes<HTMLSelectElement>{
         value: string;
         label: string;
     }>
+    register?: any;
 }
 
-const Select: React.FC<SelectProps> = ({ name, label, options , defaultOption, ...rest }) => {
+const Select: React.FC<SelectProps> = ({ name, label, options , defaultOption, register, ...rest }) => {
     return (
         <div className="select-block">
             <label htmlFor={ name }>{ label }</label>
-            <select value="" id={ name } { ...rest }>
-                <option value="" disabled hidden >{ defaultOption }</option>
+            <select id={ name } name={name} ref={register} { ...rest }>
+                <option value="" defaultValue={defaultOption} disabled hidden>{ defaultOption }</option>
                 { options.map(option => {
                     return <option key={ option.value } value={ option.value }>{ option.label }</option>
                 }) }

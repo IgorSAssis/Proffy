@@ -14,7 +14,7 @@ function Routes() {
     return (
         <BrowserRouter>
             <Route path="/login" exact component={Login} />
-            <Route path="/home" component={Landing} />
+            <Route path="/home/:id" component={Landing} />
             <Route path="/study" component={TeacherList} />
             <Route path="/register" component={Register} />
             <Route path="/register/conclusion"
@@ -25,8 +25,8 @@ function Routes() {
                         textButton="Fazer login"
                     />}>
             </Route>
-            <Route path="/teacher/profile" component={TeacherProfile}></Route>
-            <Route path="/classes/give" component={TeacherForm} />
+            <Route path="/teacher/profile/:id" component={TeacherProfile}></Route>
+            <Route path="/classes/give/:id" component={TeacherForm} />
             <Route path="/password/reset" component={ForgotPassword}></Route>
             <Route path="/password/reset/conclusion"
                 component={() =>

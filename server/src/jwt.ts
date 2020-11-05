@@ -1,6 +1,9 @@
 import jwt from "jsonwebtoken";
+import * as dotenv from "dotenv";
 
-const secret = "mySecret";
+dotenv.config();
+// const SECRET = process.env.ACCESS_SECRET_TOKEN;
+const SECRET = "MySecret";
 
-export const sign = (payload: Object) => jwt.sign(payload, secret);
-export const verify = (token: string) => jwt.verify(token, secret);
+export const sign = (payload: Object) => jwt.sign(payload, SECRET);
+export const verify = (token: string) => jwt.verify(token, SECRET);

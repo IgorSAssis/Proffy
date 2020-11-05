@@ -15,7 +15,7 @@
     align-items: center;
 }
 
-.register-content { 
+.register-content {
     display: block;
     height: 100%;
 }
@@ -37,18 +37,21 @@
     line-height: 34px;
     font-size: 36px;
     color: var(--color-text-title);
-    margin:0px 0px 2rem 5px;
+    margin: 0px 0px 2rem 5px;
 }
 
 .register-container .register-content form fieldset h4 {
     color: var(--color-text-base);
     font-weight: normal;
     font-size: 16px;
-    margin:0px 0px 2rem 5px;
+    margin: 0px 0px 2rem 5px;
 }
 
+.register-container .register-content form fieldset .inputs .input-wrapper {
+    position: relative;
+}
 
-.register-container .register-content form fieldset .inputs input {
+.register-container .register-content form fieldset .inputs .input-wrapper input {
     display: block;
     width: 100%;
     margin-bottom: 1px;
@@ -57,7 +60,7 @@
     outline: none;
 }
 
-.register-container .register-content form fieldset .inputs .password-input-content button {
+.register-container .register-content form fieldset .inputs .input-wrapper .password-input-content button {
     position: relative;
     top: -50px;
     right: -310px;
@@ -68,11 +71,11 @@
     outline: none;
 }
 
-.register-container .register-content form fieldset .inputs input:first-child {
+.register-container .register-content form fieldset .inputs .input-wrapper:first-child input {
     border-radius: 10px 10px 0px 0px;
 }
 
-.register-container .register-content form fieldset .inputs .password-input-content input{
+.register-container .register-content form fieldset .inputs .input-wrapper .password-input-content input {
     border-radius: 0px 0px 10px 10px;
 }
 
