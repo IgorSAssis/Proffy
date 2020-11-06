@@ -169,8 +169,8 @@ function TeacherProfile() {
                             <FiCamera color="#FFF" size={24} />
                         </button>
                     </div>
-                    <h1>{`${name} ${surname}`}</h1>
-                    <h4>Geografia</h4>
+                    <h1>{`${getValues("name")} ${getValues("surname")}`}</h1>
+                    {getValues("subject") ? <h4>{getValues("subject")}</h4> : <h4></h4>}
                 </div>
             </div>
 
@@ -253,6 +253,8 @@ function TeacherProfile() {
                                     name="subject"
                                     label="Matéria"
                                     register={register({ required: true })}
+                                    value={getValues("subject")}
+                                    disabled
                                 />
                                 {errors.subject && errors.subject.type === "required" && (
                                     <ErrorMessage message="Campo obrigatório!" />
@@ -262,8 +264,9 @@ function TeacherProfile() {
                                 <Input
                                     name="cost"
                                     label="Custo da sua hora por aula"
-                                    placeholder="R$ "
+                                    value={getValues("cost")}
                                     register={register({ required: true })}
+                                    disabled
                                 />
                                 {errors.cost && errors.cost.type === "required" && (
                                     <ErrorMessage message="Campo obrigatório!" />
@@ -276,7 +279,6 @@ function TeacherProfile() {
                     <fieldset>
                         <legend>
                             Horários disponíveis
-                            <button type="button"> + Novo horário</button>
                         </legend>
 
                         {fields.map((field, index) => {
@@ -305,6 +307,7 @@ function TeacherProfile() {
                                         type="time"
                                         register={register({ required: true })}
                                         value={field.from}
+                                        disabled
                                     />
                                     <Input
                                         name={`scheduleItem[${index}].to`}
@@ -312,6 +315,7 @@ function TeacherProfile() {
                                         type="time"
                                         register={register({ required: true })}
                                         value={field.to}
+                                        disabled
                                     />
                                 </div>
                             )

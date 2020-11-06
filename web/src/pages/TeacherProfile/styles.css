@@ -151,6 +151,7 @@
     display: grid;
     grid-template-columns: 2fr 1fr 1fr;
     column-gap: 1.6rem;
+    margin-bottom: 2rem;
 }
 
 #page-teacher-profile main form fieldset:nth-child(1) .name-surname-wrapper .input-block-wrapper .input-block,
@@ -174,21 +175,6 @@
     align-items: center;
     justify-content: space-between;
 }
-
-#page-teacher-profile main form fieldset legend>button {
-    background-color: #FFF;
-    border: none;
-    outline: none;
-    color: var(--color-primary);
-    font-weight: 600;
-    font-size: 14px;
-    cursor: pointer;
-}
-
-#page-teacher-profile main form fieldset legend>button:hover {
-    color: var(--color-primary-dark);
-}
-
 
 #page-teacher-profile main form fieldset legend+div {
     padding-top: 20px;
