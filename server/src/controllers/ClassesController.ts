@@ -3,7 +3,7 @@ import { Request, Response } from "express";
 import database from "../database/connection";
 import convertHourToMinutes from "../utils/convertHourToMinutes";
 
-interface ScheduleItem {
+type ScheduleItem = {
     week_day: number;
     from: string;
     to: string;
@@ -11,7 +11,7 @@ interface ScheduleItem {
 
 export default class {
 
-    async index( request: Request, response: Response ) {
+    async index(request: Request, response: Response) {
 
         const filters = request.query;
 
@@ -19,27 +19,27 @@ export default class {
         const week_day = filters.week_day as string;
         const time = filters.time as string;
 
-        if(!filters.week_day || !filters.subject || !filters.time){
+        if (!filters.week_day || !filters.subject || !filters.time) {
             return response.status(400).json({
                 error: "Missing filters to search classes"
             });
         }
 
-        const timeInMinutes = convertHourToMinutes(filters.time as string)
+        const timeInMinutes = convertHourToMinutes(time)
 
         const classes = await database("classes")
-                             .whereExists(function() {
-                                 this.select("class_schedule.*")
-                                     .from("class_schedule")
-                                     .whereRaw("`class_schedule`.`class_id` = `classes`.`id`")
-                                     .whereRaw("`class_schedule`.`week_day` = ??", [ Number(week_day) ])
-                                     .whereRaw("`class_schedule`.`from` <= ??", [ timeInMinutes ])
-                                     .whereRaw("`class_schedule`.`to` > ??", [ timeInMinutes ])
-                             })
-                             .where("classes.subject", "=", subject)
-                             .join("users", "classes.user_id", "=", "users.id")
-                             .select("classes.*", "users.*")
-                             
+            .whereExists(function () {
+                this.select("class_schedule.*")
+                    .from("class_schedule")
+                    .whereRaw("`class_schedule`.`class_id` = `classes`.`id`")
+                    .whereRaw("`class_schedule`.`week_day` = ??", [Number(week_day)])
+                    .whereRaw("`class_schedule`.`from` <= ??", [timeInMinutes])
+                    .whereRaw("`class_schedule`.`to` > ??", [timeInMinutes])
+            })
+            .where("classes.subject", "=", subject)
+            .join("users", "classes.user_id", "=", "users.id")
+            .select("classes.*", "users.*")
+
 
         return response.json(classes);
     }
@@ -47,13 +47,7 @@ export default class {
     async create(request: Request, response: Response) {
 
         const {
-            name,
-            surname,
-            avatar,
-            whatsapp,
-            email,
-            password,
-            bio,
+            user_id,
             subject,
             cost,
             schedule
@@ -62,17 +56,6 @@ export default class {
         const transaction = await database.transaction()
 
         try {
-            const insertedUsersIds = await transaction("users").insert({
-                name,
-                surname,
-                avatar,
-                whatsapp,
-                bio,
-                email,
-                password
-            });
-            const user_id = insertedUsersIds[0];
-
             const insertedClassesId = await transaction("classes").insert({
                 subject,
                 cost,
@@ -90,7 +73,6 @@ export default class {
             });
 
             await transaction("class_schedule").insert(classSchedule);
-
             await transaction.commit();
             return response.status(201).send();
 
@@ -101,5 +83,21 @@ export default class {
                 error: "Unexpected error while creating new class"
             })
         }
+    }
+
+    async show(request: Request, response: Response) {
+
+        const { id } = request.params;
+
+        const classes = await database("classes")
+            .select("classes.subject", "classes.cost", "class_schedule.week_day", "class_schedule.from", "class_schedule.to")
+            .join("class_schedule","classes.id", "class_schedule.class_id")
+            .where("classes.user_id", "=", id);
+
+        if(classes.length === 0) {
+            return response.status(400).json({ message: "This user does not have any class." })
+        }
+
+        return response.json(classes).status(200).send();
     }
 }

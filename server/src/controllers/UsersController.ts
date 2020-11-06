@@ -57,7 +57,8 @@ export default class {
 
         const { id } = request.params;
 
-        const { name,
+        const { 
+            name,
             surname,
             email,
             bio,
@@ -67,10 +68,10 @@ export default class {
 
         const result = await database("users").where("id", "=", id).update({ name, surname, email, bio, whatsapp, avatar });
 
-        if(!result) {
-            return response.status(500).json({ message: "Update failed." })
+        if(result === 0) {
+            return response.status(500).json({ message: "User doesn't exist." }).send();
         }
 
-        return response.status(200);
+        return response.status(200).send();
     }
 }

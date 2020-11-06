@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom"
-import { FiCamera, FiUser, FiAlertOctagon } from "react-icons/fi";
-import { useForm } from "react-hook-form";
+import { FiCamera, FiUser } from "react-icons/fi";
+import { useForm, useFieldArray } from "react-hook-form";
 
 import "./styles.css";
 import warning from "../../assets/images/icons/warning.svg";
@@ -10,9 +10,10 @@ import Input from "../../components/Input/index";
 import TextArea from "../../components/Textarea/index";
 import Select from "../../components/Select/index";
 import HeaderBar from "../../components/HeaderBar/index";
-import ErrorMessage from "../../components/ErrorMessage/index"
+import ErrorMessage from "../../components/ErrorMessage/index";
 
-import api from "../../services/api"
+import api from "../../services/api";
+import convertMinuteToHourFormated from "../../utils/convertMinuteToHour";
 
 interface UserId {
     id: string;
@@ -25,13 +26,30 @@ type UserProfile = {
     bio: string;
     avatar: string;
     email: string;
-    subject?: string;
-    costPerHour?: string;
+    subject: string;
+    cost: number;
+    scheduleItem: Array<{
+        id: number;
+        week_day: number;
+        from: string;
+        to: string;
+    }>
+}
+
+type ScheduleItem = {
+    week_day: number;
+    from: number;
+    to: number;
 }
 
 function TeacherProfile() {
 
     const params = useParams<UserId>();
+    const { register, handleSubmit, setValue, getValues, errors, control } = useForm<UserProfile>();
+    const { fields, append, remove } = useFieldArray({
+        control,
+        name: "scheduleItem"
+    });
 
     const [scheduleItems, setScheduleItem] = useState([
         { week_day: 0, from: "", to: "" }
@@ -53,8 +71,14 @@ function TeacherProfile() {
         setSurname(surname)
     }
 
-    const { register, handleSubmit, setValue, getValues, errors } = useForm<UserProfile>();
+    function setAboutClassData(subject: string, cost: number) {
+        setValue("subject", subject);
+        setValue("cost", cost);
+    }
 
+    /*
+        Load user profile data
+    */
     useEffect(() => {
         api.get(`users/${params.id}`)
             .then(response => {
@@ -76,7 +100,37 @@ function TeacherProfile() {
             })
     }, [params.id])
 
-    if(!getValues()) {
+    /*
+        Load classes
+    */
+    useEffect(() => {
+
+        api.get(`classes/${params.id}`)
+            .then(response => {
+
+                const classesData = response.data;
+
+                const { subject, cost } = classesData[0];
+                setAboutClassData(subject, cost)
+
+                const scheduleItemsFormated = classesData.map((scheduleItem: ScheduleItem, index: number) => {
+                    return {
+                        id: index,
+                        week_day: scheduleItem.week_day,
+                        from: convertMinuteToHourFormated(scheduleItem.from),
+                        to: convertMinuteToHourFormated(scheduleItem.to),
+                    }
+                });
+                append(scheduleItemsFormated)
+            })
+
+            .catch(reject => {
+
+            })
+
+    }, [])
+
+    if (!getValues()) {
         return <p>Loading...</p>
     }
 
@@ -94,8 +148,6 @@ function TeacherProfile() {
         console.log(updatedScheduleItem)
         setScheduleItem(updatedScheduleItem)
     }
-
-
 
     return (
         <div id="page-teacher-profile">
@@ -208,12 +260,12 @@ function TeacherProfile() {
                             </div>
                             <div className="input-block-wrapper">
                                 <Input
-                                    name="costPerHour"
+                                    name="cost"
                                     label="Custo da sua hora por aula"
                                     placeholder="R$ "
                                     register={register({ required: true })}
                                 />
-                                {errors.costPerHour && errors.costPerHour.type === "required" && (
+                                {errors.cost && errors.cost.type === "required" && (
                                     <ErrorMessage message="Campo obrigatório!" />
                                 )}
                             </div>
@@ -227,15 +279,15 @@ function TeacherProfile() {
                             <button type="button"> + Novo horário</button>
                         </legend>
 
-                        {scheduleItems.map((scheduleItem, index) => {
+                        {fields.map((field, index) => {
                             return (
-                                <div key={scheduleItem.week_day} className="schedule-item">
+                                <div key={field.id} className="schedule-item">
                                     <Select
-                                        name="day-of-week"
+                                        name={`scheduleItem[${index}].week_day`}
                                         label="Dia da semana"
                                         defaultOption="Selecione um dia"
-                                        value={scheduleItem.week_day}
-                                        onChange={event => setScheduleItemValue(index, "week_day", event.target.value)}
+                                        register={register({ required: true })}
+                                        value={field.week_day}
                                         options={[
                                             { value: "0", label: "Domingo" },
                                             { value: "1", label: "Segunda-feira" },
@@ -245,20 +297,21 @@ function TeacherProfile() {
                                             { value: "5", label: "Sexta-feira" },
                                             { value: "6", label: "Sábado" }
                                         ]}
+                                        disabled
                                     />
                                     <Input
-                                        name="from"
+                                        name={`scheduleItem[${index}].from`}
                                         label="Das"
                                         type="time"
-                                        value={scheduleItem.from}
-                                        onChange={event => setScheduleItemValue(index, "from", event.target.value)}
+                                        register={register({ required: true })}
+                                        value={field.from}
                                     />
                                     <Input
-                                        name="to"
+                                        name={`scheduleItem[${index}].to`}
                                         label="Até"
                                         type="time"
-                                        value={scheduleItem.to}
-                                        onChange={event => setScheduleItemValue(index, "to", event.target.value)}
+                                        register={register({ required: true })}
+                                        value={field.to}
                                     />
                                 </div>
                             )
