@@ -213,7 +213,7 @@ function TeacherForm() {
                         <legend>
                             Horários disponíveis
                         <button type="button" onClick={() => {
-                                append({ id: scheduleItemId, week_day: 0, from: 0, to: 0 })
+                                append({ id: scheduleItemId, week_day: 0, from: "00:00", to: "00:00" })
                                 setScheduleItemId(scheduleItemId + 1);
                             }}>
                                 + Novo horário
@@ -266,7 +266,6 @@ function TeacherForm() {
                                             )
                                         }
                                     </div>
-
                                     <div className="input-block-wrapper">
                                         <Input
                                             name={`scheduleItem[${index}].to`}

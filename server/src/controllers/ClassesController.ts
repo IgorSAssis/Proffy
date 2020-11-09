@@ -91,13 +91,25 @@ export default class {
 
         const classes = await database("classes")
             .select("classes.subject", "classes.cost", "class_schedule.week_day", "class_schedule.from", "class_schedule.to")
-            .join("class_schedule","classes.id", "class_schedule.class_id")
+            .join("class_schedule", "classes.id", "class_schedule.class_id")
             .where("classes.user_id", "=", id);
 
-        if(classes.length === 0) {
-            return response.status(400).json({ message: "This user does not have any class." })
-        }
-
         return response.json(classes).status(200).send();
+    }
+
+    async delete(request: Request, response: Response) {
+
+        const { id } = request.params;
+
+        const deletedItem = await database("classes")
+            .where("classes.user_id", "=", id)
+            .returning("id")
+            .del();
+
+        if(!deletedItem) {
+            return response.status(400).send();
+        }
+        
+        return response.status(200).send();
     }
 }

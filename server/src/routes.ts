@@ -18,6 +18,7 @@ const routes = express.Router();
 routes.get("/classes", classesController.index);
 routes.get("/classes/:id", classesController.show);
 routes.post("/classes", classesController.create);
+routes.delete("/classes/:id", classesController.delete)
 
 routes.get("/connections", connectionsController.index);
 routes.post("/connections", connectionsController.create);

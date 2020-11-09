@@ -1,5 +1,5 @@
 import React from "react";
-import { Link, useHistory } from "react-router-dom"
+import { useHistory } from "react-router-dom"
 import arrowBack from "../../assets/images/icons/back.svg";
 import logo from "../../assets/images/logo.svg";
 

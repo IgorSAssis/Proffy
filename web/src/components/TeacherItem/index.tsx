@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 
 import "./styles.css";
 
@@ -43,7 +43,7 @@ const TeacherItem: React.FC<TeacherItemProps> = ({ teacher }) => {
                     Preço/hora:
                     <strong>R$ {teacher.cost}</strong>
                 </p>
-                <a target="_blank" onClick={ createNewConnection } href={ `https://wa.me/${ teacher.whatsapp }` }>
+                <a target="_blank" rel="noopener noreferrer" onClick={ createNewConnection } href={ `https://wa.me/${ teacher.whatsapp }` }>
                     <img alt="Whatsapp" src={whatsappIcon} />
                 Entrar em contato
             </a>

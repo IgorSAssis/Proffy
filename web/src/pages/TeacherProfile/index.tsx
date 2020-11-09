@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom"
-import { FiCamera, FiUser } from "react-icons/fi";
+import { FiCamera, FiUser, FiXSquare, FiCheck } from "react-icons/fi";
 import { useForm, useFieldArray } from "react-hook-form";
 
 import "./styles.css";
@@ -51,12 +51,12 @@ function TeacherProfile() {
         name: "scheduleItem"
     });
 
-    const [scheduleItems, setScheduleItem] = useState([
-        { week_day: 0, from: "", to: "" }
-    ]);
-    const [name, setName] = useState("");
-    const [surname, setSurname] = useState("");
     const [avatar, setAvatar] = useState("");
+    const [newAvatar, setNewAvatar] = useState("");
+    const [oldAvatar, setOldAvatar] = useState("");
+    const [shouldRemoveClassScheduleItems, setShouldRemoveClassScheduleItems] = useState(false);
+
+    const [isChooseProfilePhotoEnabled, setIsChooseProfilePhotoEnabled] = useState(false);
 
     function setProfileData(name: string, surname: string, avatar: string, email: string, whatsapp: string, bio: string) {
         setValue("name", name);
@@ -67,8 +67,6 @@ function TeacherProfile() {
         setValue("bio", bio);
 
         setAvatar(avatar)
-        setName(name)
-        setSurname(surname)
     }
 
     function setAboutClassData(subject: string, cost: number) {
@@ -110,43 +108,77 @@ function TeacherProfile() {
 
                 const classesData = response.data;
 
-                const { subject, cost } = classesData[0];
-                setAboutClassData(subject, cost)
+                if (classesData) {
+                    const { subject, cost } = classesData[0];
+                    setAboutClassData(subject, cost)
 
-                const scheduleItemsFormated = classesData.map((scheduleItem: ScheduleItem, index: number) => {
-                    return {
-                        id: index,
-                        week_day: scheduleItem.week_day,
-                        from: convertMinuteToHourFormated(scheduleItem.from),
-                        to: convertMinuteToHourFormated(scheduleItem.to),
-                    }
-                });
-                append(scheduleItemsFormated)
+                    const scheduleItemsFormated = classesData.map((scheduleItem: ScheduleItem, index: number) => {
+                        return {
+                            id: index,
+                            week_day: scheduleItem.week_day,
+                            from: convertMinuteToHourFormated(scheduleItem.from),
+                            to: convertMinuteToHourFormated(scheduleItem.to),
+                        }
+                    });
+                    append(scheduleItemsFormated);
+                }
             })
-
             .catch(reject => {
 
             })
-
     }, [])
 
     if (!getValues()) {
         return <p>Loading...</p>
     }
 
-    function onSubmit(data: UserProfile) {
-        console.log(data)
+    function handleChangeAvatarImage() {
+        if (newAvatar) {
+            setOldAvatar(avatar)
+            setAvatar(newAvatar);
+        }
     }
 
-    function setScheduleItemValue(position: number, fieldName: string, value: string) {
-        const updatedScheduleItem = scheduleItems.map((scheduleItem, index) => {
-            if (index === position) {
-                return { ...scheduleItem, [fieldName]: value }
-            }
-            return scheduleItem;
-        })
-        console.log(updatedScheduleItem)
-        setScheduleItem(updatedScheduleItem)
+    function handleRevertChangeAvatarImage() {
+        if (oldAvatar) {
+            setAvatar(oldAvatar);
+        }
+    }
+
+    function handleRemoveAllScheduleItensAndClassInformation() {
+        remove();
+        setAboutClassData("", 0);
+        setShouldRemoveClassScheduleItems(true);
+    }
+
+    function onSubmit(data: UserProfile) {
+
+        const updateData = {
+            name: data.name,
+            surname: data.surname,
+            bio: data.bio,
+            email: data.email,
+            whatsapp: data.whatsapp,
+            avatar: avatar
+        }
+
+        api.put(`users/${params.id}`, updateData)
+            .then(response => {
+                alert("Dados atualizados com sucesso!")
+            })
+            .catch(reject => {
+                alert("Falha ao atualizar o perfil.")
+            });
+
+        if (shouldRemoveClassScheduleItems) {
+            api.delete(`classes/${params.id}`)
+                .then(response => {
+                    alert("Aula removida com sucesso!")
+                })
+                .catch(reject => {
+                    alert("Houve algum erro ao deletar a aula.")
+                });
+        }
     }
 
     return (
@@ -165,12 +197,28 @@ function TeacherProfile() {
                                     <FiUser color="#FFF" size={100} />
                                 </div>
                             )}
-                        <button type="button">
+                        <button onClick={() => {
+                            setIsChooseProfilePhotoEnabled(!isChooseProfilePhotoEnabled);
+                        }} type="button">
                             <FiCamera color="#FFF" size={24} />
                         </button>
                     </div>
+
+                    <div className={!isChooseProfilePhotoEnabled ? "" : "active"}>
+                        <Input
+                            name="image-url"
+                            label="Cole o endereço da imagem da sua foto abaixo"
+                            placeholder="Digite o endereço da imagem"
+                            value={newAvatar}
+                            onChange={event => setNewAvatar(event.target.value)}
+                        />
+                        <button className="confirm-button" type="button" onClick={handleChangeAvatarImage}><FiCheck color="#FFF" size={20} /></button>
+                        <button className="revert-button" type="button" onClick={handleRevertChangeAvatarImage}><FiXSquare color="#FFF" size={20} /></button>
+                    </div>
+
                     <h1>{`${getValues("name")} ${getValues("surname")}`}</h1>
                     {getValues("subject") ? <h4>{getValues("subject")}</h4> : <h4></h4>}
+
                 </div>
             </div>
 
@@ -217,6 +265,7 @@ function TeacherProfile() {
                                     <ErrorMessage message="E-mail inválido!" />
                                 )}
                             </div>
+
                             <div className="input-block-wrapper">
                                 <Input
                                     name="whatsapp"
@@ -252,20 +301,19 @@ function TeacherProfile() {
                                 <Input
                                     name="subject"
                                     label="Matéria"
-                                    register={register({ required: true })}
-                                    value={getValues("subject")}
+                                    register={register({ required: false })}
                                     disabled
                                 />
                                 {errors.subject && errors.subject.type === "required" && (
                                     <ErrorMessage message="Campo obrigatório!" />
                                 )}
                             </div>
+
                             <div className="input-block-wrapper">
                                 <Input
                                     name="cost"
                                     label="Custo da sua hora por aula"
-                                    value={getValues("cost")}
-                                    register={register({ required: true })}
+                                    register={register({ required: false })}
                                     disabled
                                 />
                                 {errors.cost && errors.cost.type === "required" && (
@@ -284,42 +332,53 @@ function TeacherProfile() {
                         {fields.map((field, index) => {
                             return (
                                 <div key={field.id} className="schedule-item">
-                                    <Select
-                                        name={`scheduleItem[${index}].week_day`}
-                                        label="Dia da semana"
-                                        defaultOption="Selecione um dia"
-                                        register={register({ required: true })}
-                                        value={field.week_day}
-                                        options={[
-                                            { value: "0", label: "Domingo" },
-                                            { value: "1", label: "Segunda-feira" },
-                                            { value: "2", label: "Terça-feira" },
-                                            { value: "3", label: "Quarta-feira" },
-                                            { value: "4", label: "Quinta-feira" },
-                                            { value: "5", label: "Sexta-feira" },
-                                            { value: "6", label: "Sábado" }
-                                        ]}
-                                        disabled
-                                    />
-                                    <Input
-                                        name={`scheduleItem[${index}].from`}
-                                        label="Das"
-                                        type="time"
-                                        register={register({ required: true })}
-                                        value={field.from}
-                                        disabled
-                                    />
-                                    <Input
-                                        name={`scheduleItem[${index}].to`}
-                                        label="Até"
-                                        type="time"
-                                        register={register({ required: true })}
-                                        value={field.to}
-                                        disabled
-                                    />
+                                    <div className="select-block-wrapper">
+                                        <Select
+                                            name={`scheduleItem[${index}].week_day`}
+                                            label="Dia da semana"
+                                            defaultOption="Selecione um dia"
+                                            register={register({ required: false })}
+                                            value={field.week_day}
+                                            options={[
+                                                { value: "0", label: "Domingo" },
+                                                { value: "1", label: "Segunda-feira" },
+                                                { value: "2", label: "Terça-feira" },
+                                                { value: "3", label: "Quarta-feira" },
+                                                { value: "4", label: "Quinta-feira" },
+                                                { value: "5", label: "Sexta-feira" },
+                                                { value: "6", label: "Sábado" }
+                                            ]}
+                                            disabled
+                                        />
+                                    </div>
+
+                                    <div className="input-block-wrapper">
+                                        <Input
+                                            name={`scheduleItem[${index}].from`}
+                                            label="Das"
+                                            type="time"
+                                            register={register({ required: false })}
+                                            value={field.from}
+                                            disabled
+                                        />
+                                    </div>
+
+                                    <div className="input-block-wrapper">
+                                        <Input
+                                            name={`scheduleItem[${index}].to`}
+                                            label="Até"
+                                            type="time"
+                                            register={register({ required: false })}
+                                            value={field.to}
+                                            disabled
+                                        />
+                                    </div>
                                 </div>
                             )
                         })}
+                        {fields.length > 0 && (
+                            <button type="button" onClick={handleRemoveAllScheduleItensAndClassInformation} >Deletar aulas</button>
+                        )}
 
                     </fieldset>
 
