@@ -3,7 +3,23 @@ import { Request, Response } from "express";
 import database from "../database/connection";
 import convertHourToMinutes from "../utils/convertHourToMinutes";
 
+type ClassTemplate = {
+    id: number;
+    avatar: string;
+    name: string;
+    surname: string;
+    bio: string;
+    subject: string;
+    cost: number;
+    scheduleItems: Array<{
+        week_day: number;
+        from: string;
+        to: string;
+    }>;
+}
+
 type ScheduleItem = {
+    user_id: number;
     week_day: number;
     from: string;
     to: string;
@@ -19,29 +35,87 @@ export default class {
         const week_day = filters.week_day as string;
         const time = filters.time as string;
 
-        if (!filters.week_day || !filters.subject || !filters.time) {
-            return response.status(400).json({
-                error: "Missing filters to search classes"
-            });
+        const scheduleItemsArr: Array<ScheduleItem> = [];
+        const userProfileData: Array<ClassTemplate> = [];
+
+        let classes = [];
+
+        if (!filters.week_day && !filters.subject && !filters.time) {
+            classes = await database("classes")
+                .select("users.id",
+                    "users.name",
+                    "users.surname",
+                    "users.avatar",
+                    "users.bio",
+                    "classes.subject",
+                    "classes.cost",
+                    "class_schedule.week_day",
+                    "class_schedule.from",
+                    "class_schedule.to")
+                .join("class_schedule", "classes.id", "class_schedule.class_id")
+                .join("users", "classes.user_id", "=", "users.id");
+        } else if(filters.week_day && filters.subject && filters.time) {
+
+            const timeInMinutes = convertHourToMinutes(time);
+            
+            classes = await database("classes")
+                .select("users.id",
+                    "users.name",
+                    "users.surname",
+                    "users.avatar",
+                    "users.bio",
+                    "classes.subject",
+                    "classes.cost",
+                    "class_schedule.week_day",
+                    "class_schedule.from",
+                    "class_schedule.to")
+                .join("class_schedule", "classes.id", "class_schedule.class_id")
+                .join("users", "classes.user_id", "=", "users.id")
+                .where("class_schedule.week_day", "=", [Number(week_day)])
+                .andWhere("classes.subject", "=", subject)
+                .andWhere("class_schedule.from", "<=" , [timeInMinutes])
+                .andWhere("class_schedule.to", ">" , [timeInMinutes])
+        } else {
+            return response.status(400).json({ message: "Missing filters to search classes" }).send();
         }
 
-        const timeInMinutes = convertHourToMinutes(time)
+        classes.forEach((item: any, index, arr) => {
 
-        const classes = await database("classes")
-            .whereExists(function () {
-                this.select("class_schedule.*")
-                    .from("class_schedule")
-                    .whereRaw("`class_schedule`.`class_id` = `classes`.`id`")
-                    .whereRaw("`class_schedule`.`week_day` = ??", [Number(week_day)])
-                    .whereRaw("`class_schedule`.`from` <= ??", [timeInMinutes])
-                    .whereRaw("`class_schedule`.`to` > ??", [timeInMinutes])
+            if (index === 0 || item.id !== arr[index - 1].id) {
+                userProfileData.push({
+                    id: item.id,
+                    avatar: item.avatar,
+                    name: item.name,
+                    surname: item.surname,
+                    bio: item.bio,
+                    subject: item.subject,
+                    cost: item.cost,
+                    scheduleItems: []
+                })
+            }
+            scheduleItemsArr.push({
+                user_id: item.id,
+                week_day: item.week_day,
+                from: item.from,
+                to: item.to
             })
-            .where("classes.subject", "=", subject)
-            .join("users", "classes.user_id", "=", "users.id")
-            .select("classes.*", "users.*")
 
+        })
 
-        return response.json(classes);
+        for (let i = 0; i < userProfileData.length; i++) {
+            for (let ii = 0; ii < scheduleItemsArr.length; ii++) {
+                if (userProfileData[i].id === scheduleItemsArr[ii].user_id) {
+                    userProfileData[i].scheduleItems.push({
+                        week_day: scheduleItemsArr[ii].week_day,
+                        from: scheduleItemsArr[ii].from,
+                        to: scheduleItemsArr[ii].to
+                    })
+                }
+            }
+        }
+
+        return response.status(200).json(userProfileData).send();
+
     }
 
     async create(request: Request, response: Response) {
@@ -109,7 +183,7 @@ export default class {
         if(!deletedItem) {
             return response.status(400).send();
         }
-        
+
         return response.status(200).send();
     }
 }
