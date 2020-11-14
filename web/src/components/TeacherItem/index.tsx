@@ -15,6 +15,7 @@ export interface Teacher {
     cost: number;
     id: number;
     name: string;
+    surname: string;
     subject: string;
     user_id: number;
     whatsapp: string;
@@ -82,7 +83,7 @@ const TeacherItem: React.FC<TeacherItemProps> = ({ teacher }) => {
                         </div>
                     )}
                 <div className="username-wrapper">
-                    <strong>{teacher.name}</strong>
+                    <strong>{`${teacher.name} ${teacher.surname}`}</strong>
                     <span>{teacher.subject}</span>
                 </div>
             </header>
