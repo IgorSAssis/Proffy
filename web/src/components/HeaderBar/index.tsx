@@ -19,7 +19,7 @@ const HeaderBar: React.FC<HeaderBarProps> = ({ currentPage, pageToComeBack = "/h
     }
 
     return (
-        <header>
+        <header className="page-navigation-header-container">
             <button onClick={handleGoBackToHomePage}>
                 <img src={arrowBack} alt="Arrow back" />
             </button>

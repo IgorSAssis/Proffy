@@ -1,7 +1,8 @@
-import React, { useState, FormEvent } from "react";
+import React, { useState, FormEvent, useEffect } from "react";
 import api from "../../services/api";
 
 import "./styles.css";
+import { FiSearch, FiXSquare } from "react-icons/fi";
 
 import PageHeader from "../../components/PageHeader/index";
 import HeaderBar from "../../components/HeaderBar/index"
@@ -16,25 +17,51 @@ function TeacherList() {
     const [time, setTime] = useState("");
     const [teachers, setTeachers] = useState([]);
 
+    const [totalTeachers, setTotalTeachers] = useState(0)
+
     async function searchTeachers(event: FormEvent) {
         event.preventDefault();
-
-        const response = await api.get("classes", {
+        const queryParams = {
             params: {
                 subject,
                 week_day: dayOfWeek,
                 time
             }
+        }
+
+        api.get("classes", queryParams).then(response => {
+            setTeachers(response.data);
+
+        }).catch(reject => {
+            alert("Por favor, preencha todos os filtros")
         })
-        console.log(response.data)
-        setTeachers(response.data);
     }
+
+    function handleCLearFilters() {
+        setSubject("");
+        setDayOfWeek("");
+        setTime("");
+    }
+
+    useEffect(() => {
+        api.get("connections/teachers")
+            .then(response => {
+                const { total } = response.data;
+                setTotalTeachers(total);
+            })
+            .catch(reject => {
+                alert("Erro ao carregar o total de professores.")
+            })
+    }, [])
 
     return (
 
         <div id="page-teacher-list" className="container">
             <HeaderBar currentPage="Estudar" />
-            <PageHeader title="Estes são os proffys disponíveis.">
+            <PageHeader
+                title="Estes são os proffys disponíveis."
+                totalConnections={totalTeachers}
+            >
                 <form id="search-teachers" onSubmit={searchTeachers}>
                     <Select
                         name="subject"
@@ -76,9 +103,14 @@ function TeacherList() {
                         value={time}
                         onChange={event => setTime(event.target.value)}
                     />
-                    <button type="submit">
-                        Buscar
-                    </button>
+                    <div className="filters-button-group">
+                        <button type="submit">
+                            <FiSearch color="#FFF" size={24} />
+                        </button>
+                        <button type="button" className="clear-filters" onClick={handleCLearFilters}>
+                            <FiXSquare color="#FFF" size={24} />
+                        </button>
+                    </div>
                 </form>
             </PageHeader>
 
@@ -88,8 +120,10 @@ function TeacherList() {
                         return <TeacherItem key={teacher.id} teacher={teacher} />
                     }) :
                     (
-                        <p>Nenhum professor encontrado com a sua pesquisa.</p>
-                    ) }
+                        <div className="no-registers">
+                            <p>Nenhum professor encontrado com a sua pesquisa.</p>
+                        </div>
+                    )}
 
             </main>
         </div>

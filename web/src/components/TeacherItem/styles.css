@@ -10,6 +10,22 @@
     padding: 3.2rem 2rem;
     display: flex;
     align-items: center;
+
+    background-color: #FFF;
+}
+
+.teacher-item header div.no-avatar {
+    width: 8rem;
+    height: 8rem;
+    border-radius: 50%;
+
+    float: left;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    background-color: #eeeeee;
 }
 
 .teacher-item header img {
@@ -18,17 +34,18 @@
     border-radius: 50%;
 }
 
-.teacher-item header div {
+.teacher-item header div.username-wrapper {
+    float: left;
     margin-left: 2.4rem;
 }
 
-.teacher-item header div strong{
+.teacher-item header div.username-wrapper strong{
     font: 700 2.4rem Archivo;
     display: block;
     color: var(--color-text-title);
 }
 
-.teacher-item header div span{
+.teacher-item header div.username-wrapper span{
     font-size: 1.6rem;
     display: block;
     margin-top: 0.4rem;
@@ -38,6 +55,43 @@
     padding: 0 2rem;
     font-size: 1.6rem;
     line-height: 2.8rem;
+}
+
+.teacher-item div.scheduleItem-wrapper {
+    display: flex;
+    column-gap: 10px;
+    padding: 0 2rem;
+    margin-top: 2rem;
+    overflow-x: auto;
+}
+
+.teacher-item div.scheduleItem-wrapper div {
+    padding: 10px 10px;
+    display: flex;
+    flex-direction: column;
+    background-color: rgba(221,221,221,0.7);
+    border-radius: 10px;
+}
+
+.teacher-item div.scheduleItem-wrapper div span {
+    font-size: 14px;
+    line-height: 28px;
+}
+
+.teacher-item div.scheduleItem-wrapper div b {
+    font-size: 12.375px;
+}
+
+.teacher-item div.scheduleItem-wrapper div b:nth-child(2) {
+    margin-bottom: 10px;
+}
+
+.teacher-item div.scheduleItem-wrapper div.scheduleItem-block-empty {
+    background-color: rgba(221,221,221, 0.3);
+}
+
+.teacher-item div.scheduleItem-wrapper div.scheduleItem-block-empty b {
+    color: #bababa;
 }
 
 .teacher-item footer {
