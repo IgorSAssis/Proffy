@@ -1,5 +1,5 @@
-header {
-    padding: 10px 170px 10px;
+header.page-navigation-header-container {
+    padding: 1rem 18rem 1rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -7,16 +7,23 @@ header {
     background-color: var(--color-primary-dark);
 }
 
-header span {
+header.page-navigation-header-container span {
     color: #FFF;
 }
 
-header img {
+header.page-navigation-header-container img {
     width: 50px;
 }
 
-header button {
+header.page-navigation-header-container button {
     background-color: var(--color-primary-dark);
     border: none;
     cursor: pointer;
+}
+
+@media screen and (max-width: 700px) {
+    header.page-navigation-header-container {
+        padding: 10px 30px 10px;
+    }
+
 }

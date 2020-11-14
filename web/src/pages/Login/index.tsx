@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link, useHistory } from "react-router-dom";
-import { FiEye, FiEyeOff, FiAlertOctagon } from "react-icons/fi"
+import { FiEye, FiEyeOff } from "react-icons/fi"
 import { useForm } from "react-hook-form";
 
 import api from "../../services/api";

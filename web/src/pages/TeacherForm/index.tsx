@@ -23,7 +23,7 @@ type TeacherFormProps = {
     cost: string;
     scheduleItem: Array<{
         id: number;
-        dayOfWeek: string;
+        week_day: number;
         from: string;
         to: string;
     }>
@@ -52,6 +52,9 @@ function TeacherForm() {
     const [subject, setSubject] = useState("");
     const [cost, setCost] = useState("");
 
+    /*
+        Load usern profile data
+    */
     useEffect(() => {
         api.get(`users/${params.id}`)
             .then(response => {
@@ -71,7 +74,7 @@ function TeacherForm() {
                 console.warn(reject)
                 alert("Houve algum erro inesperado.")
             })
-    }, [params.id])
+    }, [params.id]);
 
     function handleCreateClass(event: FormEvent) {
         event.preventDefault();
@@ -96,6 +99,27 @@ function TeacherForm() {
 
     function onSubmit(data: TeacherFormProps) {
         console.log(data)
+
+        const scheduleItems = data.scheduleItem.map((scheduleItem) => {
+            return {
+                week_day: Number(scheduleItem.week_day),
+                from: scheduleItem.from,
+                to: scheduleItem.to
+            }
+        })
+
+        api.post("classes", {
+            user_id: params.id,
+            subject: data.subject,
+            cost: Number(data.cost),
+            schedule: scheduleItems
+        })
+        .then(response => {
+            alert("Cadastro salvo com sucesso!")
+        })
+        .catch(reject => {
+            alert("Houve algum erro!")
+        })
     }
 
     return (
@@ -189,7 +213,7 @@ function TeacherForm() {
                         <legend>
                             Horários disponíveis
                         <button type="button" onClick={() => {
-                                append({ id: scheduleItemId, dayOfWeek: 0, from: "22:00", to: "23:00" })
+                                append({ id: scheduleItemId, week_day: 0, from: "00:00", to: "00:00" })
                                 setScheduleItemId(scheduleItemId + 1);
                             }}>
                                 + Novo horário
@@ -200,11 +224,11 @@ function TeacherForm() {
                                 <div key={field.id} className="schedule-item">
                                     <div className="select-block-wrapper">
                                         <Select
-                                            name={`scheduleItem[${index}].dayOfWeek`}
+                                            name={`scheduleItem[${index}].week_day`}
                                             label="Dia da semana"
-                                            defaultOption={field.dayOfWeek}
+                                            defaultOption={field.week_day}
                                             register={register({ required: true })}
-                                            aria-invalid={(errors.scheduleItem !== undefined && errors.scheduleItem[index]?.dayOfWeek) ? "true" : "false"}
+                                            aria-invalid={(errors.scheduleItem !== undefined && errors.scheduleItem[index]?.week_day) ? "true" : "false"}
                                             options={[
                                                 { value: "0", label: "Domingo" },
                                                 { value: "1", label: "Segunda-feira" },
@@ -217,8 +241,8 @@ function TeacherForm() {
                                         />
                                         {
                                             errors.scheduleItem !== undefined &&
-                                            errors.scheduleItem[index]?.dayOfWeek &&
-                                            errors.scheduleItem[index]?.dayOfWeek?.type === "required" &&
+                                            errors.scheduleItem[index]?.week_day &&
+                                            errors.scheduleItem[index]?.week_day?.type === "required" &&
                                             (
                                                 <ErrorMessage message="Selecione um dia da semana!" />
                                             )
@@ -242,7 +266,6 @@ function TeacherForm() {
                                             )
                                         }
                                     </div>
-
                                     <div className="input-block-wrapper">
                                         <Input
                                             name={`scheduleItem[${index}].to`}

@@ -14,9 +14,12 @@
 }
 
 .page-header .header-content .page-header-icon-content {
+    width: 180px;
+    margin-top: 3rem;
+    margin-bottom: -3rem;
     display: flex;
     position: relative;
-    left: 520px;
+    left: 70%;
 }
 
 .page-header .header-content .page-header-icon-content span {
@@ -28,7 +31,7 @@
 .page-header .header-content .page-header-icon-content img {
     width: 50px;
     height: 50px;
-    margin-right: 20px;
+    margin-right: 12px;
 }
 
 .page-header .header-content strong {
@@ -43,7 +46,7 @@
     font-size: 1.6rem;
     line-height: 2.6rem;
     color: var(--color-text-in-primary);
-    margin-top: 2.4rem;
+    margin-top: 5.4rem;
 }
 
 @media screen and (min-width: 700px) {
@@ -60,9 +63,17 @@
         max-width: 740px;
         margin: 0 auto;
         padding-bottom: 48px;
+        padding-left: 20px;
         display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: flex-start;
     }
+}
+
+@media screen and (max-width: 950px) {
+    .page-header .header-content {
+        padding-left: 0px;
+    }
+
 }

@@ -1,5 +1,5 @@
 import React from "react";
-import { Link, useHistory } from "react-router-dom"
+import { useHistory } from "react-router-dom"
 import arrowBack from "../../assets/images/icons/back.svg";
 import logo from "../../assets/images/logo.svg";
 
@@ -19,7 +19,7 @@ const HeaderBar: React.FC<HeaderBarProps> = ({ currentPage, pageToComeBack = "/h
     }
 
     return (
-        <header>
+        <header className="page-navigation-header-container">
             <button onClick={handleGoBackToHomePage}>
                 <img src={arrowBack} alt="Arrow back" />
             </button>
