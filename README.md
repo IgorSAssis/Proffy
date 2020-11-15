@@ -31,8 +31,28 @@
 ### :computer: &nbsp; Web screenshots
 
 <p align="center">
-  <img src="https://github.com/IgorSAssis/Proffy/blob/master/.github/Proffy-landingPage.png" width="400" /> 
-  <img src="https://github.com/IgorSAssis/Proffy/blob/master/.github/Proffy-list.png" width="400" /> 
+  <a href="https://github.com/IgorSAssis/Proffy/blob/master/.github/Proffy-login-page.png">
+    <img src="https://github.com/IgorSAssis/Proffy/blob/master/.github/Proffy-login-page.png" width="400" /> 
+  </a>
+  <a href="https://github.com/IgorSAssis/Proffy/blob/master/.github/Proffy-ForgotPassword-page.png">
+    <img src="https://github.com/IgorSAssis/Proffy/blob/master/.github/Proffy-ForgotPassword-page.png" width="400" />
+  </a>
+  <a href="https://github.com/IgorSAssis/Proffy/blob/master/.github/Proffy-landing-page.png">
+    <img src="https://github.com/IgorSAssis/Proffy/blob/master/.github/Proffy-landing-page.png" width="400" /> 
+  </a>
+
+</p>
+
+<p align="center">
+    <a href="https://github.com/IgorSAssis/Proffy/blob/master/.github/Proffy-profile-page.gif" width="600">
+    <img src="https://github.com/IgorSAssis/Proffy/blob/master/.github/Proffy-profile-page.gif" width="600" />
+  </a>
+  <a href="https://github.com/IgorSAssis/Proffy/blob/master/.github/Proffy-TeacherForm-page.gif" width="600" >
+    <img src="https://github.com/IgorSAssis/Proffy/blob/master/.github/Proffy-TeacherList-page.gif" width="600"/>
+  </a>
+  <a href="https://github.com/IgorSAssis/Proffy/blob/master/.github/Proffy-TeacherList-page.gif" width="600">
+    <img src="https://github.com/IgorSAssis/Proffy/blob/master/.github/Proffy-TeacherForm-page.gif" width="600"/>
+  </a>
 </p>
 
 <a name="Mobile" />
