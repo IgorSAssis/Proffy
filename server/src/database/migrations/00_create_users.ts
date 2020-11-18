@@ -10,6 +10,8 @@ export async function up(knex: Knex) {
         table.string("bio").defaultTo("");
         table.string("email").notNullable();
         table.string("password").notNullable();
+        table.string("passwordResetToken").defaultTo("");
+        table.date("passwordResetExpires").defaultTo("");
     })
 }
 
