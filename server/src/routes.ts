@@ -4,13 +4,13 @@ import ClassesController from "./controllers/ClassesController";
 import ConnectionController from "./controllers/ConnectionsController";
 import TeacherConnectionsController from "./controllers/TeacherConnectionsController";
 import UsersController from "./controllers/UsersController";
-import SignupController from "./controllers/SignupController"
+import AuthController from "./controllers/AuthController"
 
 const classesController = new ClassesController();
 const connectionsController = new ConnectionController();
 const teacherConnectionsController = new TeacherConnectionsController();
 const usersController = new UsersController()
-const signupController = new SignupController();
+const authController = new AuthController();
 
 const routes = express.Router();
 
@@ -19,7 +19,7 @@ routes.get("/classes/:id", classesController.show);
 routes.post("/classes", classesController.create);
 routes.delete("/classes/:id", classesController.delete)
 
-routes.get("/connections/teachers", teacherConnectionsController.index);
+routes.get("/connections/teachers", teacherConnectionsController.index); 
 routes.get("/connections/entries", connectionsController.index);
 routes.post("/connections/entries", connectionsController.create);
 
@@ -28,6 +28,8 @@ routes.get("/users/:id", usersController.show)
 routes.put("/users/:id", usersController.update)
 routes.post("/signUp", usersController.create);
 
-routes.get("/login", signupController.index);
+routes.post("/forgot-password", authController.forgotPassword)
+routes.post("/reset-password", authController.resetPassword)
+routes.get("/login", authController.signUp);
 
 export default routes;
