@@ -14,7 +14,7 @@ export default class {
 
         if (!credentials) {
 
-            return response.status(400).json({ errorMessage: "No credentials." });
+            return response.status(400).json({ errorMessage: "Inválid credentials." });
 
         }
 
@@ -23,7 +23,7 @@ export default class {
 
         if (userProfile === undefined) {
 
-            return response.status(404).send({ message: "User doesn't exists." });
+            return response.status(400).send({ message: "User does not found!" });
 
         }
 
@@ -33,20 +33,18 @@ export default class {
 
             if (err) {
 
-                throw err;
+                return response.status(500).send();
+
+            }
+
+            if (result) {
+
+                const token = sign({ user: id });
+                return response.status(200).send({ token, userId: id });
 
             } else {
 
-                if (result) {
-
-                    const token = sign({ user: id });
-                    return response.status(200).send({ token, userId: id });
-
-                } else {
-
-                    return response.status(400).send({ errorMessage: "E-mail or password is incorrect." });
-
-                }
+                return response.status(400).send({ errorMessage: "E-mail or password is incorrect." });
 
             }
 
@@ -92,7 +90,7 @@ export default class {
 
                 if (err) {
 
-                    return response.status(400).send({ error: "Something wrong happened during send email!" });
+                    return response.status(500).send({ errorMessage: "Something wrong happened during send email!" });
 
                 }
                 return response.status(200).send();
@@ -101,7 +99,7 @@ export default class {
 
         } catch (error) {
 
-            return response.status(400).send();
+            return response.status(500).send();
 
         }
 
@@ -118,19 +116,19 @@ export default class {
 
             if (!user) {
 
-                return response.status(400).send({ error: "User does not found!" });
+                return response.status(400).send({ errorMessage: "User does not found!" });
 
             }
 
             if (token !== user.passwordResetToken) {
 
-                return response.status(400).send({ error: "Token invalid." });
+                return response.status(400).send({ errorMessage: "Token invalid." });
 
             }
 
             if (now > user.passwordResetExpires) {
 
-                return response.status(400).send({ error: "Token expired. Generate a new token." });
+                return response.status(400).send({ errorMessage: "Token expired. Generate a new token." });
 
             }
 
@@ -138,7 +136,7 @@ export default class {
 
                 if (err) {
 
-                    throw err;
+                    return response.status(500).send({ errorMessage: "Something wrong happened during reseting account!" });
 
                 } else {
 
@@ -146,7 +144,7 @@ export default class {
 
                         if (err) {
 
-                            return response.status(405).send();
+                            return response.status(500).send();
 
                         } else {
 
@@ -163,8 +161,8 @@ export default class {
 
         } catch (error) {
 
-            return response.status(400).send({ error: "Something wrong happened!" });
-            
+            return response.status(500).send({ errorMessage: "Something wrong happened during reset password process!" });
+
         }
 
     }

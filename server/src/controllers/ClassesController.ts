@@ -80,7 +80,7 @@ export default class {
 
         } else {
 
-            return response.status(400).json({ message: "Missing filters to search classes" }).send();
+            return response.status(400).send({ errorMessage: "Missing filters to search classes" });
 
         }
 
@@ -169,7 +169,7 @@ export default class {
         } catch (err) {
 
             transaction.rollback();
-            return response.status(400).json({ error: "Unexpected error while creating new class" });
+            return response.status(400).json({ errorMessage: "Error during creating new class. Please, try again." });
 
         }
 
@@ -199,7 +199,7 @@ export default class {
 
         if (!deletedItem) {
 
-            return response.status(400).send();
+            return response.status(400).send({ errorMessage: "Class does not exist." });
 
         }
 

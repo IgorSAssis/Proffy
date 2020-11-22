@@ -16,6 +16,13 @@ export default class {
 
         const { id } = request.params;
         const [userData] = await database("users").select("name", "surname", "email", "bio", "whatsapp", "avatar").where("id", "=", id);
+
+        if (!userData) {
+
+            return response.status(400).send({ errorMessage: "User does not found!" });
+
+        }
+
         return response.status(200).json(userData);
 
     }
@@ -29,9 +36,9 @@ export default class {
             password
         } = request.body;
 
-        const isEmailRegistered = await database("users").where("email", "=", email);
+        const [user] = await database("users").where("email", "=", email);
 
-        if (isEmailRegistered.length > 0) {
+        if (user) {
 
             return response.status(400).send({ error: "E-mail already registered." });
 
@@ -41,26 +48,24 @@ export default class {
 
             if (err) {
 
-                throw err;
-
-            } else {
-
-                await bcrypt.hash(password, salt, async(err, hash) => {
-
-                    if (err) {
-
-                        return response.status(405).send();
-
-                    } else {
-
-                        const userId = await database("users").insert({ name, surname, email, password: hash });
-                        return userId ? response.status(201).send() : response.status(500).send({ errorMessage: "Registration failed!" });
-
-                    }
-
-                });
+                return response.status(500).send({ errorMessage: "Something wrong happened during creating new account!" });
 
             }
+
+            await bcrypt.hash(password, salt, async(err, hash) => {
+
+                if (err) {
+
+                    return response.status(500).send({ errorMessage: "Something wrong happened during creating new account!" });
+
+                } else {
+
+                    const userId = await database("users").insert({ name, surname, email, password: hash });
+                    return userId ? response.status(201).send() : response.status(500).send({ errorMessage: "Registration failed!" });
+
+                }
+
+            });
 
         });
 
@@ -99,7 +104,7 @@ export default class {
 
         const totalTeachers = total[0];
         return response.status(200).json(totalTeachers);
-    
+
     }
 
 }
