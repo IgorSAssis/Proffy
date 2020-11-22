@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import database from "../database/connection";
+import database from "@database/connection";
 
 export default class {
 
@@ -10,7 +10,8 @@ export default class {
             .join("classes", "users.id", "=", "classes.user_id");
 
         const totalTeachers = total[0];
-        return response.status(200).json(totalTeachers)
+        return response.status(200).json(totalTeachers);
+
     }
 
 }

@@ -1,7 +1,7 @@
 import bcrypt from "bcrypt";
 import { Request, Response } from "express";
 
-import database from "../database/connection";
+import database from "@database/connection";
 
 export default class {
 
@@ -32,32 +32,45 @@ export default class {
         const isEmailRegistered = await database("users").where("email", "=", email);
 
         if (isEmailRegistered.length > 0) {
+
             return response.status(400).send({ error: "E-mail already registered." });
+
         }
 
-        await bcrypt.genSalt(10, async (err, salt) => {
+        await bcrypt.genSalt(10, async(err, salt) => {
+
             if (err) {
+
                 throw err;
+
             } else {
-                await bcrypt.hash(password, salt, async (err, hash) => {
+
+                await bcrypt.hash(password, salt, async(err, hash) => {
+
                     if (err) {
+
                         return response.status(405).send();
+
                     } else {
+
                         const userId = await database("users").insert({ name, surname, email, password: hash });
-                        // const token = sign({ user: userId })
-                        // console.log(token);
-                        return response.status(201).send();
+                        return userId ? response.status(201).send() : response.status(500).send({ errorMessage: "Registration failed!" });
+
                     }
-                })
+
+                });
+
             }
-        })
+
+        });
+
     }
 
     async update(request: Request, response: Response) {
 
         const { id } = request.params;
 
-        const { 
+        const {
             name,
             surname,
             email,
@@ -68,10 +81,14 @@ export default class {
 
         const result = await database("users").where("id", "=", id).update({ name, surname, email, bio, whatsapp, avatar });
 
-        if(result === 0) {
+        if (result === 0) {
+
             return response.status(400).json({ message: "User doesn't exist." }).send();
+
         }
 
         return response.status(200).send();
+
     }
+
 }

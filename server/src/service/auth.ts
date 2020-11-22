@@ -1,15 +1,21 @@
 import { Request, Response, NextFunction } from "express";
-import { verify } from "../jwt"
-import database from "../database/connection";
 
+export const isAuthenticated = async(request: Request, response: Response, next: NextFunction) => {
 
-export const isAuthenticated = async (request: Request, response: Response, next: NextFunction) => {
-    const [, token ] = request.headers.authorization?.split(" ")
+    const credentials = request.headers.authorization?.split(" ");
+
     try {
-        const payload = await verify(token)
-        console.log(payload)
 
-    } catch(err) {
-        return response.send(err)
+        if (!credentials) {
+
+            return response.status(400).send({ errorMessage: "Invalid credentials." });
+        
+        }
+
+    } catch (err) {
+
+        return response.send(err);
+    
     }
-}
+
+};
