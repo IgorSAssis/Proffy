@@ -91,4 +91,15 @@ export default class {
 
     }
 
+    async selectTotalTeachers(request: Request, response: Response) {
+
+        const total = await database("users")
+            .count("users.id as total")
+            .join("classes", "users.id", "=", "classes.user_id");
+
+        const totalTeachers = total[0];
+        return response.status(200).json(totalTeachers);
+    
+    }
+
 }

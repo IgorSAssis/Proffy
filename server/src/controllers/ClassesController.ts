@@ -169,7 +169,6 @@ export default class {
         } catch (err) {
 
             transaction.rollback();
-            console.warn(err);
             return response.status(400).json({ error: "Unexpected error while creating new class" });
 
         }

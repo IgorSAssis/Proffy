@@ -8,7 +8,7 @@ import mailer from "../modules/mailer";
 
 export default class {
 
-    async signUp(request: Request, response: Response) {
+    async signIn(request: Request, response: Response) {
 
         const credentials = request.headers.authorization?.split(" ");
 
@@ -163,7 +163,6 @@ export default class {
 
         } catch (error) {
 
-            console.log(error);
             return response.status(400).send({ error: "Something wrong happened!" });
             
         }
